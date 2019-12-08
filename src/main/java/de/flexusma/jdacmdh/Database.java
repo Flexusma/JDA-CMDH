@@ -5,21 +5,21 @@ package de.flexusma.jdacmdh;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.internal.requests.Route;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Database {
-    static String url;
-    static String user;
-    static String password;
-    boolean isInit = false;
-    static Connection con = null;
+    private static String url;
+    private static String user;
+    private static String password;
+    private  String purl;
+    private  String puser;
+    private  String ppassword;
+    private static boolean isInit = false;
+    private static Connection con = null;
 
 
     public static Connection getCon(){
@@ -31,12 +31,22 @@ public class Database {
         }
     }
 
+    public Database(String dbUrl, String username, String password){
+        this.purl=dbUrl;
+        this.puser=username;
+        this.ppassword =password;
+    }
+
     public boolean initDB() {
         Logger.log(LogType.INFO,"Connecting to DB...");
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection = DriverManager.getConnection(purl, puser, ppassword)) {
             Logger.log(LogType.INFO,"Database connected!");
             isInit = true;
             con = connection;
+
+            url=purl;
+            user=puser;
+            password=ppassword;
 
             return true;
         } catch (SQLException e) {
@@ -104,8 +114,8 @@ public class Database {
     }
 
 
-    public static Preferences prefFromDB(Connection connection,
-                                         String id) throws SQLException, IOException,
+    public static CommandPreferences prefFromDB(Connection connection,
+                                                String id) throws SQLException, IOException,
             ClassNotFoundException {
         PreparedStatement pstmt = connection
                 .prepareStatement(SQL_DESERIALIZE_OBJECT);
@@ -120,7 +130,7 @@ public class Database {
         if (buf != null)
             objectIn = new ObjectInputStream(new ByteArrayInputStream(buf));
 
-        Preferences deSerializedObject = (Preferences)objectIn.readObject();
+        CommandPreferences deSerializedObject = (CommandPreferences)objectIn.readObject();
 
         rs.close();
         pstmt.close();
@@ -133,21 +143,21 @@ public class Database {
     }
 
 
-    public static Preferences initPref(JDA jda, String id){
+    public static CommandPreferences initPref(JDA jda, String id){
         try {
             return Database.prefFromDB(Database.getCon(), id);
         }catch (Exception e){
             Logger.log(LogType.WARN,e.getMessage());
             try {
-                prefToDB(Database.getCon(),id,new Preferences());
+                prefToDB(Database.getCon(),id,new CommandPreferences());
             } catch (SQLException ex) {
                 Logger.log(LogType.WARN,ex.getMessage());
             }
-            return new Preferences();
+            return new CommandPreferences();
         }
     }
 
-    public static void savePref(JDA jda, String id, Preferences pref){
+    public static void savePref(JDA jda, String id, CommandPreferences pref){
 
         try {
             prefToDB(Database.getCon(),id,pref);

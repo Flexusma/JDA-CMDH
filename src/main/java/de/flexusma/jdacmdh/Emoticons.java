@@ -2,10 +2,10 @@ package de.flexusma.jdacmdh;
 
 import java.io.StringWriter;
 
-class Emoticons {
-    static String success;
-    static String warn;
-    static String error;
+public class Emoticons {
+    public  String success;
+    public  String warn;
+    public  String error;
 
     Emoticons(String success, String warn, String error){
         this.success=success;

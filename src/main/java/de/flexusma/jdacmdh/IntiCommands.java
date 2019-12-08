@@ -1,5 +1,7 @@
 package de.flexusma.jdacmdh;
 
+import de.flexusma.jdacmdh.command.Command;
+
 import java.util.HashMap;
 
 class IntiCommands {
