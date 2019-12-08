@@ -16,7 +16,7 @@ public class Logger {
     public static final String ANSI_WHITE = "\u001B[37m";
     public static LogType logLevel=LogType.INFO;
 
-    
+
 
     public static void log(LogType toLog, String info) {
         if (toLog != logLevel) {
