@@ -1,4 +1,4 @@
-package de.flexusma.jdacmdh;
+package de.flexusma.jdacmdh.command;
 
 import net.dv8tion.jda.api.Permission;
 
@@ -9,7 +9,7 @@ public class Command {
     public  boolean guildOnly;
 
 
-    protected void execute(CommandEvent event){
+    public void execute(CommandEvent event){
 
     }
 

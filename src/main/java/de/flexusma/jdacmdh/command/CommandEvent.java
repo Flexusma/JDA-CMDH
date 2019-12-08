@@ -1,6 +1,9 @@
-package de.flexusma.jdacmdh;
+package de.flexusma.jdacmdh.command;
 
 
+
+import de.flexusma.jdacmdh.CommandPreferences;
+import de.flexusma.jdacmdh.EmbededBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
