@@ -71,8 +71,9 @@
 
     <distributionManagement>
         <repository>
-            <id>internal</id>
-            <url>file://${project.build.directory}/mvn-repo</url>
+            <id>github</id>
+            <name>JDA-Utilities Alternative</name>
+            <url>https://maven.pkg.github.com/Flexusma/JDA-CMDH</url>
         </repository>
     </distributionManagement>
 
