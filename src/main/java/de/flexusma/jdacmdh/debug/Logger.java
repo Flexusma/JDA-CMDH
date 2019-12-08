@@ -1,5 +1,8 @@
 package de.flexusma.jdacmdh.debug;
 
+import de.flexusma.jdacmdh.CommandInitBuilder;
+import de.flexusma.jdacmdh.CommandListener;
+
 public class Logger {
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -13,7 +16,7 @@ public class Logger {
     public static final String ANSI_WHITE = "\u001B[37m";
     public static LogType logLevel=LogType.INFO;
 
-
+    
 
     public static void log(LogType toLog, String info) {
         if (toLog != logLevel) {

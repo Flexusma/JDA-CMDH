@@ -8,11 +8,12 @@ import jdk.jfr.internal.LogLevel;
 
 public class CommandInitBuilder {
 
-    LogType logLevel = LogType.WARN;
-    Database db = null;
-    boolean isDatabase = false;
-    CommandPreferences commandPreferences = new CommandPreferences();
-    IntiCommands cmds = null;
+     LogType logLevel = LogType.WARN;
+     Database db = null;
+     boolean isDatabase = false;
+     CommandPreferences commandPreferences = new CommandPreferences();
+     IntiCommands cmds = null;
+
 
     public CommandInitBuilder logLevel(LogType logLevel){
         this.logLevel=logLevel;
@@ -20,13 +21,10 @@ public class CommandInitBuilder {
     }
     public CommandInitBuilder database(Database database) {
         try {
-
-
             if (isDatabase = database.initDB())
                 this.db = database;
             else
                 throw new DatabaseInitializationFailedException("Initialization Failed");
-
         }catch (DatabaseInitializationFailedException r){
             Logger.log(LogType.ERROR,r.getMessage());
         }
@@ -39,6 +37,10 @@ public class CommandInitBuilder {
     public CommandInitBuilder commands(Command... commands){
         this.cmds=new IntiCommands(commands);
         return this;
+    }
+
+    public CommandListener build(){
+        return new CommandListener(this);
     }
 
 }
