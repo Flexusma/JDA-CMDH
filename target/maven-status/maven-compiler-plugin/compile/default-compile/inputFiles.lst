@@ -1,10 +1,12 @@
 C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\debug\LogType.java
+C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandPreferences.java
 C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\IntiCommands.java
-C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandEvent.java
+C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\CommandEvent.java
+C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandInitBuilder.java
 C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\Database.java
 C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\Emoticons.java
-C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\Preferences.java
+C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\Command.java
+C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\exception\DatabaseInitializationFailedException.java
 C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\debug\Logger.java
 C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\EmbededBuilder.java
 C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandListener.java
-C:\Users\craft\Documents\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\Command.java

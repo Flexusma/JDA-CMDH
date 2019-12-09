@@ -15,6 +15,7 @@ public class Logger {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
     public static LogType logLevel=LogType.INFO;
+    public static String loggerName="JDA-CMDH | Log: ";
 
 
 
@@ -23,33 +24,33 @@ public class Logger {
             switch (toLog.getLevel()) {
                 case 0:
                     if (0>=logLevel.getLevel()) {
-                        System.out.println(getColor(toLog)+"Wavvy-Log: " + toLog.getType() + " | " + info+ANSI_RESET);
+                        System.out.println(getColor(toLog)+loggerName + toLog.getType() + " | " + info+ANSI_RESET);
                         break;
                     }
 
                 case 1:
 
                     if (1>=logLevel.getLevel()) {
-                        System.out.println(getColor(toLog)+"Wavvy-Log: " + toLog.getType() + " | " + info+ANSI_RESET);
+                        System.out.println(getColor(toLog)+loggerName+ toLog.getType() + " | " + info+ANSI_RESET);
                         break;
                     }
 
                 case 2:
 
                     if (2>=logLevel.getLevel()) {
-                        System.out.println(getColor(toLog)+"Wavvy-Log: " + toLog.getType() + " | " + info+ANSI_RESET);
+                        System.out.println(getColor(toLog)+loggerName + toLog.getType() + " | " + info+ANSI_RESET);
                         break;
                     }
 
                 case 3:
 
                     if (3>=logLevel.getLevel()) {
-                        System.out.println(getColor(toLog)+"Wavvy-Log: " + toLog.getType() + " | " + info+ANSI_RESET);
+                        System.out.println(getColor(toLog)+loggerName + toLog.getType() + " | " + info+ANSI_RESET);
                         break;
                     }
             }
         }else{
-            System.out.println(getColor(toLog)+"Wavvy-Log: " + toLog.getType() + " | " + info+ANSI_RESET);
+            System.out.println(getColor(toLog)+loggerName + toLog.getType() + " | " + info+ANSI_RESET);
         }
     }
 
