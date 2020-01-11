@@ -2,4 +2,6 @@ de\flexusma\jdacmdh\exception\DatabaseInitializationFailedException.class
 de\flexusma\jdacmdh\command\Command.class
 de\flexusma\jdacmdh\CommandInitBuilder.class
 de\flexusma\jdacmdh\CommandPreferences.class
+de\flexusma\jdacmdh\command\ReactionCommand.class
+de\flexusma\jdacmdh\database\Database.class
 de\flexusma\jdacmdh\command\CommandEvent.class

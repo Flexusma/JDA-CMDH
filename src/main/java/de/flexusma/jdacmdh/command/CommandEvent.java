@@ -156,6 +156,7 @@ public class CommandEvent {
         textChannel.sendMessage(
                 EmbededBuilder.create(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
         ).queue();
+
     }
     public void replyWarn(String title, String description, List<MessageEmbed.Field> embds){
         textChannel.sendMessage(
@@ -182,6 +183,7 @@ public class CommandEvent {
                 e
         ).queue();
     }
+
 
 
 }

@@ -1,10 +1,10 @@
 package de.flexusma.jdacmdh;
 
 import de.flexusma.jdacmdh.command.Command;
+import de.flexusma.jdacmdh.database.Database;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
 import de.flexusma.jdacmdh.exception.DatabaseInitializationFailedException;
-import jdk.jfr.internal.LogLevel;
 
 public class CommandInitBuilder {
 

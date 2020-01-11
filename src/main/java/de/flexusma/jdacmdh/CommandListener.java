@@ -1,7 +1,7 @@
 package de.flexusma.jdacmdh;
 
-import de.flexusma.jdacmdh.command.Command;
 import de.flexusma.jdacmdh.command.CommandEvent;
+import de.flexusma.jdacmdh.database.Database;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
 import net.dv8tion.jda.api.entities.Activity;
@@ -70,6 +70,7 @@ public class CommandListener extends ListenerAdapter {
 
         Logger.log(LogType.INFO,"Command detected: "+command);
         for (String registercmds:cmd.cmds.keySet()) {
+            Logger.log(LogType.DEBUG,command+" "+registercmds);
             if (registercmds.equals(command)) {
                 String args = String.join(" ", Arrays.copyOfRange(raw, 1, raw.length)).replaceFirst(registercmds , "");
                 if(event.getMessage().getContentRaw().startsWith(event.getJDA().getSelfUser().getAsMention())) args=args.replaceFirst(" ","");
@@ -84,6 +85,7 @@ public class CommandListener extends ListenerAdapter {
         event.getJDA().getPresence().setActivity(Activity.listening("@"+event.getJDA().getSelfUser().getAsTag()+ " "));
         super.onReady(event);
     }
+
 
  /*  public void onUserActivityStart(@Nonnull UserActivityStartEvent event) {
 
