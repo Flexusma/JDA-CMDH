@@ -1,6 +1,8 @@
 package de.flexusma.jdacmdh;
 
 
+import de.flexusma.jdacmdh.utils.Emoticons;
+
 import javax.annotation.Nullable;
 import java.io.Serializable;
 
