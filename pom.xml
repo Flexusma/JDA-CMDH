@@ -6,7 +6,7 @@
 
     <groupId>de.flexusma</groupId>
     <artifactId>JDA-CMDH</artifactId>
-    <version>1.0.5+b5</version>
+    <version>1.0.7</version>
 
     <build>
         <plugins>
@@ -53,19 +53,15 @@
     <repositories>
         <repository>
             <id>jcenter</id>
-            <url>http://jcenter.bintray.com</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            <name>jcenter-bintray</name>
+            <url>https://jcenter.bintray.com</url>
         </repository>
     </repositories>
     <dependencies>
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.0.0_51</version>
-            <scope>compile</scope>
+            <version>4.1.0_81</version>
         </dependency>
     </dependencies>
 
