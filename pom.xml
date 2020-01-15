@@ -6,7 +6,7 @@
 
     <groupId>de.flexusma</groupId>
     <artifactId>JDA-CMDH</artifactId>
-    <version>1.0.5+b2</version>
+    <version>1.0.5+b5</version>
 
     <build>
         <plugins>

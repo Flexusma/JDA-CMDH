@@ -147,15 +147,17 @@ public class Database {
     public static CommandPreferences initPref(JDA jda, String id){
         try {
             return Database.prefFromDB(Database.getCon(), id);
+        }catch (SQLException e) {
+            Logger.log(LogType.WARN, "SQL Error: " + e.getErrorCode() + " " + e.getMessage());
+
         }catch (Exception e){
-            Logger.log(LogType.WARN,e.getMessage());
             try {
                 prefToDB(Database.getCon(),id,new CommandPreferences());
             } catch (SQLException ex) {
                 Logger.log(LogType.WARN,ex.getMessage());
             }
-            return new CommandPreferences();
         }
+        return new CommandPreferences();
     }
 
     public static void savePref(JDA jda, String id, CommandPreferences pref){
@@ -163,7 +165,7 @@ public class Database {
         try {
             prefToDB(Database.getCon(),id,pref);
         } catch (SQLException e) {
-            Logger.log(LogType.WARN,e.getMessage());
+            Logger.log(LogType.WARN, "SQL Error: "+e.getErrorCode()+" "+e.getMessage());
             try {
                 uprefToDB(Database.getCon(),id,pref);
             } catch (SQLException e1) {
