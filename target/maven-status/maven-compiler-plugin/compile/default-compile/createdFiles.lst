@@ -1,7 +1,18 @@
+de\flexusma\jdacmdh\CommandPreferences.class
 de\flexusma\jdacmdh\exception\DatabaseInitializationFailedException.class
+de\flexusma\jdacmdh\IntiCommands.class
+de\flexusma\jdacmdh\Emoticons.class
 de\flexusma\jdacmdh\command\Command.class
+de\flexusma\jdacmdh\CommandListener.class
 de\flexusma\jdacmdh\CommandInitBuilder.class
+<<<<<<< Updated upstream
 de\flexusma\jdacmdh\CommandPreferences.class
 de\flexusma\jdacmdh\command\ReactionCommand.class
 de\flexusma\jdacmdh\database\Database.class
+=======
+de\flexusma\jdacmdh\EmbededBuilder.class
+>>>>>>> Stashed changes
 de\flexusma\jdacmdh\command\CommandEvent.class
+de\flexusma\jdacmdh\debug\Logger.class
+de\flexusma\jdacmdh\Database.class
+de\flexusma\jdacmdh\debug\LogType.class
