@@ -6,8 +6,8 @@ de\flexusma\jdacmdh\debug\LogType.class
 de\flexusma\jdacmdh\CommandPreferences.class
 de\flexusma\jdacmdh\command\ReactionCommand.class
 de\flexusma\jdacmdh\IntiCommands.class
-de\flexusma\jdacmdh\Emoticons.class
 de\flexusma\jdacmdh\CommandListener.class
 de\flexusma\jdacmdh\database\Database.class
 de\flexusma\jdacmdh\command\CommandEvent.class
 de\flexusma\jdacmdh\debug\Logger.class
+de\flexusma\jdacmdh\utils\Emoticons.class
