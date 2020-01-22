@@ -44,10 +44,8 @@ public class CommandListener extends ListenerAdapter {
     }
 //guild messages
     @Override
-    public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        if(event.isFromGuild())
-        if(isDatabase)
-            preferences = Database.initPref(event.getJDA(),event.getGuild().getId());
+    public void onMessageReceived(MessageReceivedEvent event) {
+        if(event.isFromGuild()&&isDatabase) preferences = Database.initPref(event.getJDA(),event.getGuild().getId());
 
         Logger.log(LogType.DEBUG,"Message recieved: "+event.getMessage().getContentRaw());
         if (event.getMessage().getContentRaw().startsWith(preferences.getPrefix()) ||
@@ -79,7 +77,6 @@ public class CommandListener extends ListenerAdapter {
             }
         }
     }
-
 
 
     @Override

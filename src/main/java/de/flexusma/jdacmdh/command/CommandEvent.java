@@ -49,6 +49,14 @@ public class CommandEvent {
         this.mRevE = mRevE;
     }
 
+    public PrivateMessageReceivedEvent getPrivateMessageRecieved() {
+        return pmRevE;
+    }
+
+    public void setPrivateMessageRecieved(PrivateMessageReceivedEvent pmRevE) {
+        this.mRevE = mRevE;
+    }
+
     public User getSender() {
         return sender;
     }
@@ -127,6 +135,7 @@ public class CommandEvent {
     MessageChannel channel;
     JDA jda;
     MessageReceivedEvent mRevE;
+    PrivateMessageReceivedEvent pmRevE;
     User sender;
     Member member;
     Message mes;
@@ -156,6 +165,19 @@ public class CommandEvent {
     }
 
 
+    public CommandEvent(PrivateMessageReceivedEvent e, CommandPreferences pref, String Args, HashMap<String,Command> cmdList){
+        this.channel=e.getChannel();
+        this.jda=e.getJDA();
+        this.pmRevE=e;
+        this.sender=e.getAuthor();
+        this.mes=e.getMessage();
+        this.creTime=e.getMessage().getTimeCreated();
+        this.pref=pref;
+        this.args=Args;
+        this.commands= new ArrayList(cmdList.values());
+        this.mentions = e.getMessage().getMentionedMembers();
+
+    }
 
     public void replySuccess(String title, String description, List<MessageEmbed.Field> embds){
         textChannel.sendMessage(
