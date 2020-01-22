@@ -161,7 +161,8 @@ public class CommandEvent {
             this.member=e.getMember();
         this.args=Args;
         this.commands= new ArrayList(cmdList.values());
-        this.mentions = e.getMessage().getMentionedMembers();
+        if(e.isFromGuild())
+            this.mentions = e.getMessage().getMentionedMembers();
 
     }
 
