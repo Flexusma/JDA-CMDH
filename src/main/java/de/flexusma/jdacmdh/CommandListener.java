@@ -7,6 +7,8 @@ import de.flexusma.jdacmdh.debug.Logger;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.priv.PrivateMessageEmbedEvent;
+import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
@@ -40,9 +42,10 @@ public class CommandListener extends ListenerAdapter {
         this.isDatabase =cmbdBuilder.isDatabase;
         this.preferences= cmbdBuilder.commandPreferences;
     }
-
+//guild messages
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
+        if(event.isFromGuild())
         if(isDatabase)
             preferences = Database.initPref(event.getJDA(),event.getGuild().getId());
 
@@ -54,17 +57,14 @@ public class CommandListener extends ListenerAdapter {
             handlercommand(event,preferences);
         }
     }
-
-
-
     private void handlercommand(MessageReceivedEvent event, CommandPreferences commandPreferences) {
         String[] raw;
         String command;
         if(event.getMessage().getContentRaw().startsWith(event.getJDA().getSelfUser().getAsMention())) {
-             raw = event.getMessage().getContentRaw().replaceFirst(event.getJDA().getSelfUser().getAsMention(), "").split(" ");
+            raw = event.getMessage().getContentRaw().replaceFirst(event.getJDA().getSelfUser().getAsMention(), "").split(" ");
             command = raw[1];
         }else{
-             raw = event.getMessage().getContentRaw().replaceFirst(commandPreferences.getPrefix(), "").split(" ");
+            raw = event.getMessage().getContentRaw().replaceFirst(commandPreferences.getPrefix(), "").split(" ");
             command = raw[0];
         }
 
@@ -79,6 +79,8 @@ public class CommandListener extends ListenerAdapter {
             }
         }
     }
+
+
 
     @Override
     public void onReady(@Nonnull ReadyEvent event) {

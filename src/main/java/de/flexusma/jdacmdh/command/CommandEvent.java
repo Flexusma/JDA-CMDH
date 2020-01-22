@@ -7,6 +7,7 @@ import de.flexusma.jdacmdh.EmbededBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 
 import java.awt.*;
 import java.time.OffsetDateTime;
@@ -120,6 +121,8 @@ public class CommandEvent {
         this.mentions = mentions;
     }
 
+
+
     Guild guild;
     MessageChannel channel;
     JDA jda;
@@ -151,6 +154,8 @@ public class CommandEvent {
         this.mentions = e.getMessage().getMentionedMembers();
 
     }
+
+
 
     public void replySuccess(String title, String description, List<MessageEmbed.Field> embds){
         textChannel.sendMessage(
