@@ -1,3 +1,10 @@
+/*
+ * Copyright 2019-2020 Lucas Regh | Flexusma
+ * This Project is licensed under
+ * CC0 1.0 Universal
+ * A copy of the complete license can be found in the root folder of this project in a file called License
+ */
+
 package de.flexusma.jdacmdh.command;
 
 
@@ -46,14 +53,6 @@ public class CommandEvent {
     }
 
     public void setMessageRecieved(MessageReceivedEvent mRevE) {
-        this.mRevE = mRevE;
-    }
-
-    public PrivateMessageReceivedEvent getPrivateMessageRecieved() {
-        return pmRevE;
-    }
-
-    public void setPrivateMessageRecieved(PrivateMessageReceivedEvent pmRevE) {
         this.mRevE = mRevE;
     }
 
@@ -135,7 +134,6 @@ public class CommandEvent {
     MessageChannel channel;
     JDA jda;
     MessageReceivedEvent mRevE;
-    PrivateMessageReceivedEvent pmRevE;
     User sender;
     Member member;
     Message mes;
@@ -148,65 +146,82 @@ public class CommandEvent {
     CommandPreferences pref;
 
     public CommandEvent(MessageReceivedEvent e, CommandPreferences pref, String Args, HashMap<String,Command> cmdList){
-        this.guild=e.getGuild();
+        if(e.isFromGuild())
+            this.guild=e.getGuild();
         this.channel=e.getChannel();
         this.jda=e.getJDA();
         this.mRevE=e;
         this.sender=e.getAuthor();
         this.mes=e.getMessage();
         this.creTime=e.getMessage().getTimeCreated();
-        this.textChannel=e.getTextChannel();
+        if(e.isFromGuild())
+            this.textChannel=e.getTextChannel();
         this.pref=pref;
-        this.member=e.getMember();
+        if(e.isFromGuild())
+            this.member=e.getMember();
         this.args=Args;
         this.commands= new ArrayList(cmdList.values());
         this.mentions = e.getMessage().getMentionedMembers();
 
     }
 
-
-    public CommandEvent(PrivateMessageReceivedEvent e, CommandPreferences pref, String Args, HashMap<String,Command> cmdList){
-        this.channel=e.getChannel();
-        this.jda=e.getJDA();
-        this.pmRevE=e;
-        this.sender=e.getAuthor();
-        this.mes=e.getMessage();
-        this.creTime=e.getMessage().getTimeCreated();
-        this.pref=pref;
-        this.args=Args;
-        this.commands= new ArrayList(cmdList.values());
-        this.mentions = e.getMessage().getMentionedMembers();
-
-    }
 
     public void replySuccess(String title, String description, List<MessageEmbed.Field> embds){
+        if(mRevE.isFromGuild())
         textChannel.sendMessage(
                 EmbededBuilder.create(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
         ).queue();
-
+        else channel.sendMessage(
+                EmbededBuilder.create(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
+        ).queue();
     }
     public void replyWarn(String title, String description, List<MessageEmbed.Field> embds){
+        if(mRevE.isFromGuild())
         textChannel.sendMessage(
                 EmbededBuilder.create(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
         ).queue();
+        else
+            channel.sendMessage(
+                    EmbededBuilder.create(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
+            ).queue();
     }
     public void replyError(String title, String description, List<MessageEmbed.Field> embds){
+        if(mRevE.isFromGuild())
         textChannel.sendMessage(
                 EmbededBuilder.create(pref.getEmoticons().error+title, description, Color.RED,embds).build()
         ).queue();
+        else
+            channel.sendMessage(
+                    EmbededBuilder.create(pref.getEmoticons().error+title, description, Color.RED,embds).build()
+            ).queue();
     }
     public void reply(Message e){
+        if(mRevE.isFromGuild())
         textChannel.sendMessage(
                 e
         ).queue();
+        else
+            channel.sendMessage(
+                    e
+            ).queue();
     }
     public void reply(MessageEmbed e){
+        if(mRevE.isFromGuild())
         textChannel.sendMessage(
                 e
         ).queue();
+        else
+            channel.sendMessage(
+                    e
+            ).queue();
     }
     public void reply(String e){
+        if(mRevE.isFromGuild())
         textChannel.sendMessage(
+                e
+        ).queue();
+        else
+            channel.sendMessage(
                 e
         ).queue();
     }
