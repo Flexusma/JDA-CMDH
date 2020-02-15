@@ -69,7 +69,7 @@ public class CommandListener extends ListenerAdapter {
             raw = event.getMessage().getContentRaw().replaceFirst(event.getJDA().getSelfUser().getAsMention(), "").split(" ");
             command = raw[1];
         }else{
-            raw = event.getMessage().getContentRaw().replaceFirst(commandPreferences.getPrefix(), "").split(" ");
+            raw = event.getMessage().getContentRaw().replaceFirst("["+commandPreferences.getPrefix()+"]", "").split(" ");
             command = raw[0];
         }
 
