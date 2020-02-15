@@ -26,6 +26,12 @@ public class CommandPreferences implements Serializable {
         if(emoticons!=null) this.setEmoticons(emoticons);
     }
 
+
+    public CommandPreferences(@Nullable String prefix) {
+        if(prefix!=null) this.setPrefix(prefix);
+    }
+
+
     public CommandPreferences() {
 
     }
