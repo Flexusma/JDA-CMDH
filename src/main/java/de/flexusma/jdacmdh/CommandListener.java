@@ -73,7 +73,7 @@ public class CommandListener extends ListenerAdapter {
     private void handlercommand(MessageReceivedEvent event, CommandPreferences commandPreferences) {
         String[] raw;
         String command;
-        if(event.getMessage().getContentRaw().startsWith(event.getJDA().getSelfUser().getAsMention())) {
+        if(event.getMessage().getContentRaw().replace("!","").startsWith(event.getJDA().getSelfUser().getAsMention())) {
             raw = event.getMessage().getContentRaw().replaceFirst(event.getJDA().getSelfUser().getAsMention(), "").split(" ");
             command = raw[1];
         }else{
