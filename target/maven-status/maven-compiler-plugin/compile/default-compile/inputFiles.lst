@@ -1,13 +1,13 @@
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\debug\LogType.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\exception\DatabaseInitializationFailedException.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandInitBuilder.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\database\Database.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\IntiCommands.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\debug\Logger.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandPreferences.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\CommandEvent.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\utils\EmbededBuilder.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\Command.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\ReactionCommand.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandListener.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\utils\Emoticons.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/utils/EmbededBuilder.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/command/ReactionCommand.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/CommandInitBuilder.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/CommandListener.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/command/Command.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/IntiCommands.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/database/Database.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/utils/Emoticons.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/command/CommandEvent.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/exception/DatabaseInitializationFailedException.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/CommandPreferences.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/debug/LogType.java
+/Users/flexusma/Documents/GitHub/JDA-CMDH/src/main/java/de/flexusma/jdacmdh/debug/Logger.java
