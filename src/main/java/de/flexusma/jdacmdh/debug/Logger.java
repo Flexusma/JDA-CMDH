@@ -10,6 +10,8 @@ package de.flexusma.jdacmdh.debug;
 import de.flexusma.jdacmdh.CommandInitBuilder;
 import de.flexusma.jdacmdh.CommandListener;
 
+import java.nio.file.Path;
+
 public class Logger {
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -24,14 +26,42 @@ public class Logger {
     public static LogType logLevel=LogType.INFO;
     public static String loggerName="JDA-CMDH | Log: ";
 
+    private static Path file;
 
+
+    public static void setup(String prefix, LogType logLevel){
+
+    }
+    public static void setup(String prefix, LogType logLevel, Path logFile){
+
+    }
+    public static void setup(String prefix, Path logfile){
+
+    }
+    public static void setup(LogType logLevel, Path logfile){
+
+    }
+    public static void setup(String prefix){
+
+    }
+    public static void setup(Path logfile){
+
+    }
+    public static void setup(LogType logLevel){
+
+    }
+
+    public static void setLogFilePath(Path path){
+        file=path;
+    }
 
     public static void log(LogType toLog, String info) {
         if (toLog != logLevel) {
             switch (toLog.getLevel()) {
                 case 0:
                     if (0>=logLevel.getLevel()) {
-                        System.out.println(getColor(toLog)+loggerName + toLog.getType() + " | " + info+ANSI_RESET);
+                        String msg= getColor(toLog)+loggerName + toLog.getType() + " | " + info+ANSI_RESET;
+                        System.out.println(msg);
                         break;
                     }
 

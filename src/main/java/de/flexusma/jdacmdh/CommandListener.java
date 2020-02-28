@@ -22,6 +22,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageEmbedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import sun.security.util.Debug;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -64,7 +65,7 @@ public class CommandListener extends ListenerAdapter {
 
         Logger.log(LogType.DEBUG,"Message recieved: "+event.getMessage().getContentRaw());
         if (event.getMessage().getContentRaw().startsWith(preferences.getPrefix()) ||
-                event.getMessage().getContentRaw().startsWith(event.getJDA().getSelfUser().getAsMention())
+                event.getMessage().getContentRaw().replace("!","").startsWith(event.getJDA().getSelfUser().getAsMention())
                         && !event.getMessage().getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
             Logger.log(LogType.DEBUG,"Command detected");
             handlercommand(event,preferences);

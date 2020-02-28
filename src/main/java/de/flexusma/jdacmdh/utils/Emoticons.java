@@ -7,7 +7,9 @@
 
 package de.flexusma.jdacmdh.utils;
 
-public class Emoticons {
+import java.io.Serializable;
+
+public class Emoticons implements Serializable {
 
     public String success;
     public String warn;
