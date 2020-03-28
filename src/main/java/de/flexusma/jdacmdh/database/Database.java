@@ -18,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.sql.*;
+import java.util.Arrays;
 
 public class Database {
     private static String url;
@@ -155,13 +156,15 @@ public class Database {
         try {
             return Database.prefFromDB(Database.getCon(), id);
         }catch (SQLException e) {
-            Logger.log(LogType.WARN, "SQL Error: " + e.getErrorCode() + " " + e.getMessage());
+            e.printStackTrace();
+            Logger.log(LogType.WARN, "SQL Error: " + e.getErrorCode() + " " + e.getMessage()+" "+ Arrays.toString(e.getStackTrace()));
 
         }catch (Exception e){
             try {
                 prefToDB(Database.getCon(),id,new CommandPreferences());
             } catch (SQLException ex) {
-                Logger.log(LogType.WARN,ex.getMessage());
+                ex.printStackTrace();
+                Logger.log(LogType.WARN,ex.getMessage()+" "+ Arrays.toString(ex.getStackTrace()));
             }
         }
         return new CommandPreferences();
@@ -172,11 +175,13 @@ public class Database {
         try {
             prefToDB(Database.getCon(),id,pref);
         } catch (SQLException e) {
-            Logger.log(LogType.WARN, "SQL Error: "+e.getErrorCode()+" "+e.getMessage());
+            e.printStackTrace();
+            Logger.log(LogType.WARN, "SQL Error: "+e.getErrorCode()+" "+e.getMessage()+" "+ Arrays.toString(e.getStackTrace()));
             try {
                 uprefToDB(Database.getCon(),id,pref);
             } catch (SQLException e1) {
-                Logger.log(LogType.WARN,e1.getMessage());
+                e1.printStackTrace();
+                Logger.log(LogType.WARN,e1.getMessage()+" "+ Arrays.toString(e1.getStackTrace()));
             }
         }
 

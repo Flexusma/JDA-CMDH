@@ -10,11 +10,10 @@ package de.flexusma.jdacmdh.command;
 
 
 import de.flexusma.jdacmdh.CommandPreferences;
-import de.flexusma.jdacmdh.EmbededBuilder;
+import de.flexusma.jdacmdh.utils.EmbededBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 
 import java.awt.*;
 import java.time.OffsetDateTime;

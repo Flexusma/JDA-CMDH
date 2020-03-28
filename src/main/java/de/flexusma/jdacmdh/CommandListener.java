@@ -7,11 +7,16 @@
 
 package de.flexusma.jdacmdh;
 
+import de.flexusma.jdacmdh.command.Command;
 import de.flexusma.jdacmdh.command.CommandEvent;
 import de.flexusma.jdacmdh.database.Database;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
+import de.flexusma.jdacmdh.utils.EmbededBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageEmbedEvent;
@@ -19,7 +24,10 @@ import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class CommandListener extends ListenerAdapter {
     CommandPreferences preferences;
@@ -65,22 +73,40 @@ public class CommandListener extends ListenerAdapter {
     private void handlercommand(MessageReceivedEvent event, CommandPreferences commandPreferences) {
         String[] raw;
         String command;
-        if(event.getMessage().getContentRaw().startsWith(event.getJDA().getSelfUser().getAsMention())) {
+        if(event.getMessage().getContentRaw().replace("!","").startsWith(event.getJDA().getSelfUser().getAsMention())) {
             raw = event.getMessage().getContentRaw().replaceFirst(event.getJDA().getSelfUser().getAsMention(), "").split(" ");
             command = raw[1];
         }else{
-            raw = event.getMessage().getContentRaw().replaceFirst(commandPreferences.getPrefix(), "").split(" ");
+            raw = event.getMessage().getContentRaw().replaceFirst("["+commandPreferences.getPrefix()+"]", "").split(" ");
             command = raw[0];
         }
 
         Logger.log(LogType.INFO,"Command detected: "+command);
         for (String registercmds:cmd.cmds.keySet()) {
-            Logger.log(LogType.DEBUG,command+" "+registercmds);
+            //Logger.log(LogType.DEBUG,command+" "+registercmds);
             if (registercmds.equals(command)) {
                 String args = String.join(" ", Arrays.copyOfRange(raw, 1, raw.length)).replaceFirst(registercmds , "");
                 if(event.getMessage().getContentRaw().startsWith(event.getJDA().getSelfUser().getAsMention())) args=args.replaceFirst(" ","");
                 Logger.log(LogType.DEBUG,"Command Arguments: "+args);
-                cmd.cmds.get(registercmds).execute(new CommandEvent(event, commandPreferences, args , cmd.cmds));
+                Command command1 = cmd.cmds.get(registercmds);
+                List<Permission> missingPerms = new ArrayList<>();
+                CommandEvent event1 = new CommandEvent(event, commandPreferences, args , cmd.cmds);
+                if(event.isFromGuild()){
+                    for(Permission p : command1.getBotPermissions()){
+                        if(!event.getGuild().getSelfMember().hasPermission(p)){
+                            missingPerms.add(p);
+                        }
+                    }
+                }
+                if(missingPerms.size()>=1){
+                    List<MessageEmbed.Field> fields = new ArrayList<>();
+                    for(Permission p:missingPerms){
+                        fields.add(new MessageEmbed.Field(""+missingPerms.indexOf(p),p.getName(),missingPerms.indexOf(p)%2==0));
+                    }
+                    Logger.log(LogType.WARN,"Missing Permissions on command:["+command1.getName()+"] at guild:["+event.getGuild().getName()+"|"+event.getGuild().getId()+"]");
+                    event1.reply( EmbededBuilder.create("Error, not enough Permissions!", "Hey, it seems that I'm missing some Permissions... Please check that!", Color.red,fields).build());
+                }else
+                command1.execute(event1);
             }
         }
     }
