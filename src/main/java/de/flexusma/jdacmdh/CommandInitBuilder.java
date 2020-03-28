@@ -26,19 +26,20 @@ public class CommandInitBuilder {
         this.logLevel=logLevel;
         return this;
     }
+
+    public CommandInitBuilder preferences(CommandPreferences preferences){
+        this.commandPreferences=preferences;
+        return this;
+    }
     public CommandInitBuilder database(Database database) {
         try {
-            if (isDatabase = database.initDB())
+            if (isDatabase = database.initDB(commandPreferences))
                 this.db = database;
             else
                 throw new DatabaseInitializationFailedException("Initialization Failed");
         }catch (DatabaseInitializationFailedException r){
             Logger.log(LogType.ERROR,r.getMessage());
         }
-        return this;
-    }
-    public CommandInitBuilder preferences(CommandPreferences preferences){
-        this.commandPreferences=preferences;
         return this;
     }
     public CommandInitBuilder commands(Command... commands){
