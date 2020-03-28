@@ -56,5 +56,8 @@ public class CommandPreferences implements Serializable {
     public void setVolume(int volume) {
         this.volume = volume;
     }
+
+
+
 }
 
