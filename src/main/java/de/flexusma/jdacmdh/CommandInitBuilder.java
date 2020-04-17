@@ -18,7 +18,7 @@ public class CommandInitBuilder {
      LogType logLevel = LogType.WARN;
      Database db = null;
      boolean isDatabase = false;
-     CommandPreferences commandPreferences = new CommandPreferences();
+     CommandPreferences commandPreferences;
      IntiCommands cmds = null;
 
 

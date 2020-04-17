@@ -4,6 +4,7 @@ de\flexusma\jdacmdh\utils\EmbededBuilder.class
 de\flexusma\jdacmdh\command\Command.class
 de\flexusma\jdacmdh\CommandInitBuilder.class
 de\flexusma\jdacmdh\debug\LogType.class
+de\flexusma\jdacmdh\exception\NotChildOfCommandPreferencesClass.class
 de\flexusma\jdacmdh\CommandPreferences.class
 de\flexusma\jdacmdh\command\ReactionCommand.class
 de\flexusma\jdacmdh\IntiCommands.class

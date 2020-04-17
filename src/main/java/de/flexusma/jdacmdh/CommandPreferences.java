@@ -36,6 +36,11 @@ import java.io.Serializable;
     }
 
 
+    public CommandPreferences returnCastedInstance(){
+        return null;
+    }
+
+
     public CommandPreferences() {
 
     }

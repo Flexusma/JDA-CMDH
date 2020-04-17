@@ -2,7 +2,6 @@ package de.flexusma.jdacmdh.utils;
 
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
-import sun.rmi.runtime.Log;
 
 import java.lang.reflect.Type;
 import java.sql.JDBCType;

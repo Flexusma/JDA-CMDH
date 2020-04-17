@@ -42,7 +42,9 @@ public class Database {
     private String ppassword;
     private static boolean isInit = false;
     private static Connection con = null;
+    //class data
     private static CommandPreferences prefStructure;
+    private static Class<?> prefClass;
 
     public static Connection getCon() {
         try {
@@ -69,6 +71,11 @@ public class Database {
 
     //check database, table and column setup;
     private boolean checkDatabase(CommandPreferences preferences) {
+
+        //checking class type of Preferences
+        Logger.log(LogType.DEBUG,"Class name of Preferences: "+preferences.getClass().getName());
+        prefClass=preferences.getClass();
+
 
         Logger.log(LogType.INFO, "Checking Database connection...");
         try (Connection connection = DriverManager.getConnection(purl, puser, ppassword)) {
@@ -149,16 +156,17 @@ public class Database {
 
 
     public static void prefToDB(Connection connection, String id, CommandPreferences objectToSerialize) throws SQLException, IllegalAccessException {
-        Field[] fields =objectToSerialize.getClass().getFields();
+        Field[] fields =prefStructure.getClass().getFields();
+        Logger.log(LogType.DEBUG,fields.length+"");
         StringBuilder names = new StringBuilder();
         int count =0;
         StringBuilder values= new StringBuilder();
         for(Field f : fields){
             if(count==0){
-                names.append(f.getName());
+                names.append("`"+f.getName()+"`");
                 values.append("?");
             } else {
-                names.append(","+f.getName());
+                names.append(",`"+f.getName()+"`");
                 values.append(",?");
             }
 
@@ -177,7 +185,7 @@ public class Database {
             setPreparedData(f,objectToSerialize,pstmt,counter);
             counter++;
         }
-
+        Logger.log(LogType.DEBUG,"prefDB: "+query);
         pstmt.executeUpdate();
         pstmt.close();
         Logger.log(LogType.INFO, "Java object serialized to database. Object: "
@@ -226,7 +234,7 @@ public class Database {
     }
 
 
-    public static CommandPreferences prefFromDB(Connection connection, String id) throws SQLException, IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public static CommandPreferences prefFromDB(Connection connection, String id) throws SQLException, IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
         PreparedStatement pstmt = connection
                 .prepareStatement(SQL_DESERIALIZE_OBJECT);
         pstmt.setString(1, id);
@@ -236,24 +244,27 @@ public class Database {
         Object[] args = new Object[prefStructure.getClass().getFields().length];
 
         int col = rs.getMetaData().getColumnCount();
-
-
-        for (Constructor<?> ctor : prefStructure.getClass().getConstructors()) {
+        for (Constructor ctor : prefClass.getConstructors()) {
             Class<?>[] paramTypes = ctor.getParameterTypes();
 
             // If the arity matches, let's use it.
             Logger.log(LogType.DEBUG,args.length+" | "+paramTypes.length);
+          //  CommandPreferences preferences = prefStructure;
             if (args.length == paramTypes.length) {
 
                 for(int i =1; i<=col;i++){
                     args[i-1]=getDataFromRS(prefStructure.getClass().getFields()[i-1].getType(),rs,i);
+                  //  preferences.getClass().getMethod("set"+prefStructure.getClass().getFields()[i-1].getName(),prefStructure.getClass().getFields()[i-1].getType()).invoke(preferences,args[i-1]);
                 }
                 // Instantiate the object with the converted arguments.
                 Logger.log(LogType.INFO, "Downloaded + parsed Data from Database");
                 rs.close();
                 pstmt.close();
                 connection.close();
-                return (CommandPreferences) ctor.newInstance(args);
+
+
+
+                return ((CommandPreferences) ctor.newInstance(args)).returnCastedInstance();
             }
         }
 
@@ -298,10 +309,18 @@ public class Database {
 
 
     private static String createSQLData(Field field, CommandPreferences preferences) throws SQLException, IllegalAccessException {
-        return field.getName()+" = ?";
+        return "`" + field.getName()+"` = ?";
     }
 
-    private static void setPreparedData(Field field, CommandPreferences preferences, PreparedStatement pr, int index) throws SQLException, IllegalAccessException {
+    private static void setPreparedData(Field field, CommandPreferences cpreferences, PreparedStatement pr, int index) throws SQLException, IllegalAccessException {
+
+        Logger.log(LogType.DEBUG,"Class name of newPreferences: "+cpreferences.getClass().getName());
+        Logger.log(LogType.DEBUG,"Class name of storedPreferences: "+prefClass.getName());
+
+        CommandPreferences preferences = cpreferences.returnCastedInstance();
+
+        Logger.log(LogType.DEBUG,cpreferences.getClass().getName()+" class is to be setpreparedData");
+
         Type target = field.getType();
         if (target == Object.class || target == String.class) {
              pr.setObject(index,field.get(preferences));
@@ -335,17 +354,15 @@ public class Database {
     public static CommandPreferences initPref(JDA jda, String id) {
         try {
             return Database.prefFromDB(Database.getCon(), id);
-        } catch (SQLException e) {
-            Logger.log(LogType.WARN, "SQL Error: " + e.getErrorCode() + " " + e.getMessage());
-
-        } catch (Exception e) {
+        } catch (SQLException | IOException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException | NoSuchMethodException e) {
+            Logger.log(LogType.WARN, "SQL Error: " + " " + e.getMessage());
             try {
-                prefToDB(Database.getCon(), id, new CommandPreferences());
+                prefToDB(Database.getCon(), id, prefStructure);
             } catch (SQLException | IllegalAccessException ex) {
                 Logger.log(LogType.WARN, ex.getMessage());
             }
         }
-        return new CommandPreferences();
+        return prefStructure;
     }
 
     public static void savePref(JDA jda, String id, CommandPreferences pref) {
