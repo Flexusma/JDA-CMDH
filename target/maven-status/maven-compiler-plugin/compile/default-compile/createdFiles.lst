@@ -4,10 +4,12 @@ de\flexusma\jdacmdh\utils\EmbededBuilder.class
 de\flexusma\jdacmdh\command\Command.class
 de\flexusma\jdacmdh\CommandInitBuilder.class
 de\flexusma\jdacmdh\debug\LogType.class
+de\flexusma\jdacmdh\exception\LogFileSaveError.class
 de\flexusma\jdacmdh\exception\NotChildOfCommandPreferencesClass.class
 de\flexusma\jdacmdh\CommandPreferences.class
 de\flexusma\jdacmdh\command\ReactionCommand.class
 de\flexusma\jdacmdh\IntiCommands.class
+de\flexusma\jdacmdh\command\defaults\MsgPrivateOnGuildOnly.class
 de\flexusma\jdacmdh\CommandListener.class
 de\flexusma\jdacmdh\database\Database.class
 de\flexusma\jdacmdh\command\CommandEvent.class

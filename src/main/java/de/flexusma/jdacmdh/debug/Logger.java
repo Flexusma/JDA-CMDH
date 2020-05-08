@@ -9,8 +9,21 @@ package de.flexusma.jdacmdh.debug;
 
 import de.flexusma.jdacmdh.CommandInitBuilder;
 import de.flexusma.jdacmdh.CommandListener;
+import de.flexusma.jdacmdh.exception.LogFileSaveError;
+import jdk.nashorn.internal.runtime.regexp.joni.WarnCallback;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
 
 public class Logger {
 
@@ -23,76 +36,128 @@ public class Logger {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
-    public static LogType logLevel=LogType.INFO;
-    public static String loggerName="JDA-CMDH | Log: ";
+    public static LogType logLevel= LogType.WARN;
+    public static String loggerName = "JDA-CMDH | Log: ";
+    public static String folder = "logs/";
+    private static Path file = Paths.get("logs/");
 
-    private static Path file;
+
+    private static String logFileDate = "";
+
+    private static boolean forceDisableFileLog = true;
 
 
-    public static void setup(String prefix, LogType logLevel){
-
-    }
-    public static void setup(String prefix, LogType logLevel, Path logFile){
-
-    }
-    public static void setup(String prefix, Path logfile){
-
-    }
-    public static void setup(LogType logLevel, Path logfile){
-
-    }
-    public static void setup(String prefix){
-
-    }
-    public static void setup(Path logfile){
-
-    }
-    public static void setup(LogType logLevel){
+    public static void setup(String prefix, LogType logLevel) {
 
     }
 
-    public static void setLogFilePath(Path path){
-        file=path;
+    public static void setup(String prefix, LogType logLevel, Path logFile) {
+
     }
 
-    public static void log(LogType toLog, String info) {
-        if (toLog != logLevel) {
-            switch (toLog.getLevel()) {
-                case 0:
-                    if (0>=logLevel.getLevel()) {
-                        String msg= getColor(toLog)+loggerName + toLog.getType() + " | " + info+ANSI_RESET;
-                        System.out.println(msg);
-                        break;
-                    }
+    public static void setup(String prefix, Path logfile) {
 
-                case 1:
+    }
 
-                    if (1>=logLevel.getLevel()) {
-                        System.out.println(getColor(toLog)+loggerName+ toLog.getType() + " | " + info+ANSI_RESET);
-                        break;
-                    }
+    public static void setup(LogType loglevel, boolean writeToFile,String logfile) {
+        System.out.println(logLevel.level);
+        logLevel = loglevel;
+        forceDisableFileLog=!writeToFile;
+        folder =logfile;
 
-                case 2:
+    }
 
-                    if (2>=logLevel.getLevel()) {
-                        System.out.println(getColor(toLog)+loggerName + toLog.getType() + " | " + info+ANSI_RESET);
-                        break;
-                    }
 
-                case 3:
+    public static void setup(String logfile) {
+        folder = logfile;
+    }
 
-                    if (3>=logLevel.getLevel()) {
-                        System.out.println(getColor(toLog)+loggerName + toLog.getType() + " | " + info+ANSI_RESET);
-                        break;
-                    }
-            }
-        }else{
-            System.out.println(getColor(toLog)+loggerName + toLog.getType() + " | " + info+ANSI_RESET);
+    public static void setup(LogType loglevel) {
+        logLevel = loglevel;
+    }
+
+    public static void setLogFilePath(String path) {
+        folder = path;
+    }
+
+    private static void debugLog(LogType toLog, String info){
+        if (toLog.level <= logLevel.getLevel()) {
+            String msg = getColor(toLog) + loggerName + toLog.getType() + " | " + info + ANSI_RESET;
+            System.out.println(msg);
         }
     }
 
-    static String getColor(LogType type){
-        switch (type.getLevel()){
+    public static void log(LogType toLog, String info) {
+
+
+        if (logFileDate.equalsIgnoreCase("")) {
+            logFileDate = new Date(System.currentTimeMillis()).toString();
+            logFileDate=logFileDate.replace(" ", "");
+            logFileDate=logFileDate.replace(":", "");
+            logFileDate+=".log";
+            file= Paths.get(folder+logFileDate);
+        }
+
+        if (toLog.level <= logLevel.getLevel()) {
+            String msg = getColor(toLog) + loggerName + toLog.getType() + " | " + info + ANSI_RESET;
+            System.out.println(msg);
+            if (!forceDisableFileLog) {
+                checkFileCreate();
+                FileWriter writer = null;
+                try {
+                    writer = new FileWriter(String.valueOf(file),true);
+                } catch (IOException e) {
+                    Logger.debugLog(LogType.WARN, "Logfile path was invalid, using default fallback path ~/logs/ \nPlease check the specified logfile path, to avoid future complications!");
+                    try {
+                        writer = new FileWriter("logs/" + logFileDate,true);
+                    } catch (IOException ioException) {
+                        try {
+                            throw new LogFileSaveError(ioException.getMessage());
+                        } catch (LogFileSaveError logFileSaveError) {
+                            Logger.debugLog(LogType.ERROR, logFileSaveError.toString());
+                            forceDisableFileLog = true;
+                        }
+                        Logger.debugLog(LogType.ERROR, "Force-Disabling FileLog, due to an unknown and critical Error! \n" +
+                                "Please check if the Bot has permission to write in this folder! \n" +
+                                "If the issue persists, please create an issue on https://github.com/Flexusma/JDA-CMDH/issues with a copy of the full debug console log! (change loglevel to LogLevel.DEBUG)");
+                    }
+                }
+                
+                if(writer!=null){
+                    BufferedWriter bufferedWriter = new BufferedWriter(writer);
+                    msg ="("+new Date().toString()+")"+ loggerName + toLog.getType() + " | " + info;
+                    try {
+                        bufferedWriter.write(msg+"\n");
+                        bufferedWriter.close();
+                    } catch (IOException e) {
+                        Logger.debugLog(LogType.WARN, "An Error occured while writing to the log file:\n"+e.toString());
+                    }
+
+                }
+                
+            }
+
+        }
+    }
+
+    public static void checkFileCreate() {
+        try {
+            Files.createDirectories(file.getParent());
+            Path myObj = Files.createFile(file);
+            if (myObj!=null) {
+                System.out.println("File created: " + myObj.toString());
+            }
+        }catch (FileAlreadyExistsException ey){
+           // Logger.debugLog(LogType.DEBUG,"File already Exists, continuing...");
+        }
+        catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    static String getColor(LogType type) {
+        switch (type.getLevel()) {
             case 0:
                 return ANSI_RED;
             case 1:

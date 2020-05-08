@@ -13,17 +13,32 @@ import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
 import de.flexusma.jdacmdh.exception.DatabaseInitializationFailedException;
 
+import java.nio.file.Path;
+
 public class CommandInitBuilder {
 
-     LogType logLevel = LogType.WARN;
+     LogType logLevel;
+     boolean writeToFile = true;
+     String path = null;
      Database db = null;
      boolean isDatabase = false;
      CommandPreferences commandPreferences;
      IntiCommands cmds = null;
 
+     //default overrides
+    Command MsgPrivateOnGuildOnly=null;
 
-    public CommandInitBuilder logLevel(LogType logLevel){
+    public CommandInitBuilder log(LogType logLevel, boolean writeToFile, String folder){
         this.logLevel=logLevel;
+        this.writeToFile=writeToFile;
+        this.path= folder;
+
+        Logger.setup(logLevel, writeToFile, path);
+        return this;
+    }
+
+    public CommandInitBuilder MsgPrivateOnGuildOnly(Command override){
+        MsgPrivateOnGuildOnly=override;
         return this;
     }
 
