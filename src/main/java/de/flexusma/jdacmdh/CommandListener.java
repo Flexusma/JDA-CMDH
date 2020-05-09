@@ -117,12 +117,14 @@ public class CommandListener extends ListenerAdapter {
                     }
                     Logger.log(LogType.WARN, "Missing Permissions on command:[" + command1.getName() + "] at guild:[" + event.getGuild().getName() + "|" + event.getGuild().getId() + "]");
                     event1.reply(EmbededBuilder.create("Error, not enough Permissions!", "Hey, it seems that I'm missing some Permissions... Please check that!", Color.red, fields).build());
+                } else if (!event.isFromGuild() && command1.guildOnly) {
+                    if (builder.MsgPrivateOnGuildOnly != null) builder.MsgPrivateOnGuildOnly.execute(event1);
+                    else new MsgPrivateOnGuildOnly().execute(event1);
                 } else
-                    if(!event.isFromGuild()&&command1.guildOnly){
-                        if(builder.MsgPrivateOnGuildOnly!=null) builder.MsgPrivateOnGuildOnly.execute(event1);
-                        else new MsgPrivateOnGuildOnly().execute(event1);
+
+                    if (!(event.getAuthor().isBot() && command1.ignoreOtherBot)) {
+                    command1.execute(event1);
                     }
-                    else command1.execute(event1);
             }
         }
     }

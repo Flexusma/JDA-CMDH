@@ -14,6 +14,7 @@ public abstract class Command {
     public  String help;
     public  Permission[] botPermissions;
     public  boolean guildOnly;
+    public  boolean ignoreOtherBot= true;
 
     public abstract void execute(CommandEvent event);
 
