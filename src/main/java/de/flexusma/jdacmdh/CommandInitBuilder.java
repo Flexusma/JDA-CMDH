@@ -23,10 +23,12 @@ public class CommandInitBuilder {
      Database db = null;
      boolean isDatabase = false;
      CommandPreferences commandPreferences;
+     String activity="";
      IntiCommands cmds = null;
 
      //default overrides
     Command MsgPrivateOnGuildOnly=null;
+    Command helpCommand=null;
 
     public CommandInitBuilder log(LogType logLevel, boolean writeToFile, String folder){
         this.logLevel=logLevel;
@@ -37,8 +39,18 @@ public class CommandInitBuilder {
         return this;
     }
 
+    public CommandInitBuilder activity(String new_activity){
+        activity=new_activity ;
+        return this;
+    }
+
     public CommandInitBuilder MsgPrivateOnGuildOnly(Command override){
         MsgPrivateOnGuildOnly=override;
+        return this;
+    }
+
+    public CommandInitBuilder HelpCommand(Command override){
+        helpCommand=override;
         return this;
     }
 

@@ -9,35 +9,32 @@ package de.flexusma.jdacmdh;
 
 import de.flexusma.jdacmdh.command.Command;
 import de.flexusma.jdacmdh.command.CommandEvent;
+import de.flexusma.jdacmdh.command.defaults.Help;
 import de.flexusma.jdacmdh.command.defaults.MsgPrivateOnGuildOnly;
 import de.flexusma.jdacmdh.database.Database;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
-import de.flexusma.jdacmdh.utils.EmbededBuilder;
-import net.dv8tion.jda.api.EmbedBuilder;
+import de.flexusma.jdacmdh.utils.embeds.EmbeddedBuilder;
+import de.flexusma.jdacmdh.utils.embeds.MessageEmbedField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.priv.PrivateMessageEmbedEvent;
-import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import sun.security.util.Debug;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class CommandListener extends ListenerAdapter {
     CommandPreferences preferences;
     private boolean isDatabase;
     private CommandInitBuilder builder;
+    private String customActivity = "";
     private static IntiCommands cmd = new IntiCommands(
+            new Help()
          /*   new About(),
             new Delete(),
             new Prefix(),
@@ -62,6 +59,13 @@ public class CommandListener extends ListenerAdapter {
         this.isDatabase = cmbdBuilder.isDatabase;
         this.preferences = cmbdBuilder.commandPreferences;
         builder=cmbdBuilder;
+
+        if(cmbdBuilder.helpCommand!=null)
+            cmd.cmds.replace("help",cmbdBuilder.helpCommand);
+
+        customActivity=cmbdBuilder.activity;
+
+
     }
 
     //guild messages
@@ -111,12 +115,12 @@ public class CommandListener extends ListenerAdapter {
                     }
                 }
                 if (missingPerms.size() >= 1) {
-                    List<MessageEmbed.Field> fields = new ArrayList<>();
+                    List<MessageEmbedField> fields = new ArrayList<>();
                     for (Permission p : missingPerms) {
-                        fields.add(new MessageEmbed.Field("" + missingPerms.indexOf(p), p.getName(), missingPerms.indexOf(p) % 2 == 0));
+                        fields.add(new MessageEmbedField("" + missingPerms.indexOf(p), p.getName(), missingPerms.indexOf(p) % 2 == 0));
                     }
                     Logger.log(LogType.WARN, "Missing Permissions on command:[" + command1.getName() + "] at guild:[" + event.getGuild().getName() + "|" + event.getGuild().getId() + "]");
-                    event1.reply(EmbededBuilder.create("Error, not enough Permissions!", "Hey, it seems that I'm missing some Permissions... Please check that!", Color.red, fields).build());
+                    event1.reply(EmbeddedBuilder.create("Error, not enough Permissions!", "Hey, it seems that I'm missing some Permissions... Please check that!", Color.red, fields).build());
                 } else if (!event.isFromGuild() && command1.guildOnly) {
                     if (builder.MsgPrivateOnGuildOnly != null) builder.MsgPrivateOnGuildOnly.execute(event1);
                     else new MsgPrivateOnGuildOnly().execute(event1);
@@ -132,7 +136,9 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onReady(@Nonnull ReadyEvent event) {
-        event.getJDA().getPresence().setActivity(Activity.listening("@" + event.getJDA().getSelfUser().getAsTag() + " "));
+        if(!customActivity.isEmpty())
+            event.getJDA().getPresence().setActivity(Activity.listening("@" + event.getJDA().getSelfUser().getAsTag() + " "));
+        else event.getJDA().getPresence().setActivity(Activity.playing(customActivity));
         super.onReady(event);
     }
 

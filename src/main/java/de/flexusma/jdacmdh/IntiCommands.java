@@ -17,4 +17,5 @@ class IntiCommands {
             cmds.put(cmd.name , cmd);
         }
     }
+
 }

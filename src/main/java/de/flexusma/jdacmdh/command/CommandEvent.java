@@ -10,7 +10,8 @@ package de.flexusma.jdacmdh.command;
 
 
 import de.flexusma.jdacmdh.CommandPreferences;
-import de.flexusma.jdacmdh.utils.EmbededBuilder;
+import de.flexusma.jdacmdh.utils.embeds.EmbeddedBuilder;
+import de.flexusma.jdacmdh.utils.embeds.MessageEmbedField;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -165,36 +166,71 @@ public class CommandEvent {
 
     }
 
-
-    public void replySuccess(String title, String description, List<MessageEmbed.Field> embds){
+    @Deprecated
+    public void replySuccessOld(String title, String description, List<MessageEmbed.Field> embds){
         if(mRevE.isFromGuild())
         textChannel.sendMessage(
-                EmbededBuilder.create(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
+                EmbeddedBuilder.createOld(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
         ).queue();
         else channel.sendMessage(
-                EmbededBuilder.create(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
+                EmbeddedBuilder.createOld(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
         ).queue();
     }
-    public void replyWarn(String title, String description, List<MessageEmbed.Field> embds){
+    @Deprecated
+    public void replyWarnOld(String title, String description, List<MessageEmbed.Field> embds){
         if(mRevE.isFromGuild())
         textChannel.sendMessage(
-                EmbededBuilder.create(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
+                EmbeddedBuilder.createOld(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
         ).queue();
         else
             channel.sendMessage(
-                    EmbededBuilder.create(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
+                    EmbeddedBuilder.createOld(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
             ).queue();
     }
-    public void replyError(String title, String description, List<MessageEmbed.Field> embds){
+    @Deprecated
+    public void replyErrorOld(String title, String description, List<MessageEmbed.Field> embds){
         if(mRevE.isFromGuild())
         textChannel.sendMessage(
-                EmbededBuilder.create(pref.getEmoticons().error+title, description, Color.RED,embds).build()
+                EmbeddedBuilder.createOld(pref.getEmoticons().error+title, description, Color.RED,embds).build()
         ).queue();
         else
             channel.sendMessage(
-                    EmbededBuilder.create(pref.getEmoticons().error+title, description, Color.RED,embds).build()
+                    EmbeddedBuilder.createOld(pref.getEmoticons().error+title, description, Color.RED,embds).build()
             ).queue();
     }
+
+
+    public void replySuccess(String title, String description, List<MessageEmbedField> embds){
+        if(mRevE.isFromGuild())
+            textChannel.sendMessage(
+                    EmbeddedBuilder.create(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
+            ).queue();
+        else channel.sendMessage(
+                EmbeddedBuilder.create(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
+        ).queue();
+    }
+    public void replyWarn(String title, String description, List<MessageEmbedField> embds){
+        if(mRevE.isFromGuild())
+            textChannel.sendMessage(
+                    EmbeddedBuilder.create(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
+            ).queue();
+        else
+            channel.sendMessage(
+                    EmbeddedBuilder.create(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
+            ).queue();
+    }
+    public void replyError(String title, String description, List<MessageEmbedField> embds){
+        if(mRevE.isFromGuild())
+            textChannel.sendMessage(
+                    EmbeddedBuilder.create(pref.getEmoticons().error+title, description, Color.RED,embds).build()
+            ).queue();
+        else
+            channel.sendMessage(
+                    EmbeddedBuilder.create(pref.getEmoticons().error+title, description, Color.RED,embds).build()
+            ).queue();
+    }
+
+
     public void reply(Message e){
         if(mRevE.isFromGuild())
         textChannel.sendMessage(

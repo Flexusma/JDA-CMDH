@@ -15,6 +15,7 @@ public abstract class Command {
     public  Permission[] botPermissions;
     public  boolean guildOnly;
     public  boolean ignoreOtherBot= true;
+    public  String usage;
 
     public abstract void execute(CommandEvent event);
 
@@ -33,4 +34,6 @@ public abstract class Command {
     public boolean isGuildOnly() {
         return guildOnly;
     }
+
+    public String getUsage() { return usage; }
 }
