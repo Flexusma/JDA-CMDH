@@ -24,6 +24,7 @@ public class CommandInitBuilder {
      boolean isDatabase = false;
      CommandPreferences commandPreferences;
      String activity="";
+     BeforeCommandExecution listener;
      IntiCommands cmds = null;
 
      //default overrides
@@ -41,6 +42,11 @@ public class CommandInitBuilder {
 
     public CommandInitBuilder activity(String new_activity){
         activity=new_activity ;
+        return this;
+    }
+
+    public CommandInitBuilder addBeforeCommandListener(BeforeCommandExecution listener){
+        this.listener=listener ;
         return this;
     }
 

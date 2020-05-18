@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
@@ -28,11 +29,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class CommandListener extends ListenerAdapter {
     CommandPreferences preferences;
     private boolean isDatabase;
     private CommandInitBuilder builder;
     private String customActivity = "";
+    BeforeCommandExecution listener;
+
     private static IntiCommands cmd = new IntiCommands(
             new Help()
          /*   new About(),
@@ -65,6 +69,7 @@ public class CommandListener extends ListenerAdapter {
 
         customActivity=cmbdBuilder.activity;
 
+        listener=cmbdBuilder.listener;
 
     }
 
@@ -127,10 +132,19 @@ public class CommandListener extends ListenerAdapter {
                 } else
 
                     if (!(event.getAuthor().isBot() && command1.ignoreOtherBot)) {
-                    command1.execute(event1);
+                    executeCommand(command1,event1,event,commandPreferences);
                     }
             }
         }
+    }
+
+
+    void executeCommand(Command c, CommandEvent e, MessageReceivedEvent me, CommandPreferences pref){
+        if(listener!=null)
+            if(listener.onBeforeExecution(me,pref)) {
+                Logger.log(LogType.DEBUG, "BeforeListener returned true, executing command!");
+                c.execute(e);
+            }else Logger.log(LogType.DEBUG, "BeforeListener returned false, throwing away command request!");
     }
 
 

@@ -16,4 +16,5 @@ de\flexusma\jdacmdh\CommandListener.class
 de\flexusma\jdacmdh\database\Database.class
 de\flexusma\jdacmdh\command\CommandEvent.class
 de\flexusma\jdacmdh\debug\Logger.class
+de\flexusma\jdacmdh\BeforeCommandExecution.class
 de\flexusma\jdacmdh\utils\Emoticons.class
