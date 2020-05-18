@@ -150,7 +150,7 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onReady(@Nonnull ReadyEvent event) {
-        if(!customActivity.isEmpty())
+        if(customActivity.isEmpty())
             event.getJDA().getPresence().setActivity(Activity.listening("@" + event.getJDA().getSelfUser().getAsTag() + " "));
         else event.getJDA().getPresence().setActivity(Activity.playing(customActivity));
         super.onReady(event);
