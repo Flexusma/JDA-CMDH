@@ -6,7 +6,7 @@
 
     <groupId>de.flexusma</groupId>
     <artifactId>JDA-CMDH</artifactId>
-    <version>1.1.14+b1</version>
+    <version>1.1.14</version>
 
     <build>
         <plugins>
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.1.0_81</version>
+            <version>4.1.1_108</version>
         </dependency>
     </dependencies>
 

@@ -23,6 +23,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Logger {
@@ -91,7 +92,7 @@ public class Logger {
 
 
         if (logFileDate.equalsIgnoreCase("")) {
-            logFileDate = new Date(System.currentTimeMillis()).toString();
+            logFileDate = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format( new Date(System.currentTimeMillis()));
             logFileDate=logFileDate.replace(" ", "");
             logFileDate=logFileDate.replace(":", "");
             logFileDate+=".log";
