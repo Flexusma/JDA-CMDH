@@ -12,6 +12,7 @@ import de.flexusma.jdacmdh.database.Database;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
 import de.flexusma.jdacmdh.exception.DatabaseInitializationFailedException;
+import net.dv8tion.jda.api.entities.Activity;
 
 import java.nio.file.Path;
 
@@ -23,7 +24,7 @@ public class CommandInitBuilder {
      Database db = null;
      boolean isDatabase = false;
      CommandPreferences commandPreferences;
-     String activity="";
+     Activity activity=null;
      BeforeCommandExecution listener;
      IntiCommands cmds = null;
 
@@ -40,8 +41,8 @@ public class CommandInitBuilder {
         return this;
     }
 
-    public CommandInitBuilder activity(String new_activity){
-        activity=new_activity ;
+    public CommandInitBuilder activity(Activity activity){
+        this.activity=activity ;
         return this;
     }
 

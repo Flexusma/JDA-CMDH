@@ -34,7 +34,7 @@ public class CommandListener extends ListenerAdapter {
     CommandPreferences preferences;
     private boolean isDatabase;
     private CommandInitBuilder builder;
-    private String customActivity = "";
+    private Activity customActivity = null;
     BeforeCommandExecution listener;
 
     private static IntiCommands cmd = new IntiCommands(
@@ -140,19 +140,20 @@ public class CommandListener extends ListenerAdapter {
 
 
     void executeCommand(Command c, CommandEvent e, MessageReceivedEvent me, CommandPreferences pref){
-        if(listener!=null)
-            if(listener.onBeforeExecution(me,pref)) {
+        if(listener!=null) {
+            if (listener.onBeforeExecution(me, pref)) {
                 Logger.log(LogType.DEBUG, "BeforeListener returned true, executing command!");
                 c.execute(e);
-            }else Logger.log(LogType.DEBUG, "BeforeListener returned false, throwing away command request!");
+            } else Logger.log(LogType.DEBUG, "BeforeListener returned false, throwing away command request!");
+        }else c.execute(e);
     }
 
 
     @Override
     public void onReady(@Nonnull ReadyEvent event) {
-        if(customActivity.isEmpty())
-            event.getJDA().getPresence().setActivity(Activity.listening("@" + event.getJDA().getSelfUser().getAsTag() + " "));
-        else event.getJDA().getPresence().setActivity(Activity.playing(customActivity));
+        if(customActivity==null)
+            event.getJDA().getPresence().setActivity(Activity.of(Activity.ActivityType.DEFAULT,""));
+        else event.getJDA().getPresence().setActivity(customActivity);
         super.onReady(event);
     }
 

@@ -262,6 +262,24 @@ public class CommandEvent {
         ).queue();
     }
 
+    public void deleteMessage() {
+        if (this.mRevE.isFromGuild()) {
+            this.mRevE.getMessage().delete().queue();
+        }
+    }
+
+    public void replyPrivate(Message e) {
+        this.getSender().openPrivateChannel().queue((channel) -> channel.sendMessage(e).queue());
+    }
+
+    public void replyPrivate(MessageEmbed e) {
+        this.getSender().openPrivateChannel().queue((channel) -> channel.sendMessage(e).queue());
+    }
+
+    public void replyPrivate(String e) {
+        this.getSender().openPrivateChannel().queue((channel) -> channel.sendMessage(e).queue());
+    }
+
 
 
 }

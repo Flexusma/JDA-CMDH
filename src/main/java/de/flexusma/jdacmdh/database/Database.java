@@ -25,18 +25,17 @@ import java.util.List;
 
 public class Database {
     //Database setup + statements;
-    private final static String tablename = "wavvy_preferences";
+    private final static String tablename = "preferences";
 
     private static final String SQL_SERIALIZE_OBJECT = "INSERT INTO " + tablename + " (id,<names>) VALUES (<id>, <values>)";
     private static final String SQL_SERIALIZE_UOBJECT = "UPDATE " + tablename + " SET <data> WHERE id = ?";
     private static final String SQL_DESERIALIZE_OBJECT = "SELECT * FROM " + tablename + "  WHERE id = ?";
-    private static final String SQL_CHECKCREATE_TABLE = "CREATE TABLE IF NOT EXISTS ? ( `id` VARCHAR(255) NOT NULL PRIMARY KEY ) ENGINE = InnoDB";
+    private static final String SQL_CHECKCREATE_TABLE = "CREATE TABLE IF NOT EXISTS ? ( `id` VARCHAR(150) NOT NULL PRIMARY KEY ) ENGINE = MyISAM";
     private static final String SQL_CHECKCREATE_COLUMN = "ALTER TABLE\n "+tablename+" ADD COLUMN\n IF NOT EXISTS\n <value>\n ?;";
 
     private static String url;
     private static String user;
     private static String password;
-    private static String databaseName;
     private String purl;
     private String puser;
     private String ppassword;
@@ -55,11 +54,10 @@ public class Database {
         }
     }
 
-    public Database(String dbUrl, String username, String password, String dbName) {
+    public Database(String dbUrl, String username, String password) {
         this.purl = dbUrl;
         this.puser = username;
         this.ppassword = password;
-        this.databaseName=dbName;
     }
 
     public boolean initDB(CommandPreferences preferences) {
