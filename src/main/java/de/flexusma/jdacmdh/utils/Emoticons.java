@@ -14,11 +14,9 @@ public class Emoticons implements Serializable {
     public String warn;
     public String error;
 
-
-        public Emoticons(String success, String warn, String f){
-            this.success=success;
-            this.warn=warn;
-            this.error=f;
-        }
-
+    public Emoticons(String success, String warn, String f) {
+        this.success = success;
+        this.warn = warn;
+        this.error = f;
+    }
 }

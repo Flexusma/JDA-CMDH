@@ -10,12 +10,12 @@ package de.flexusma.jdacmdh.command;
 import net.dv8tion.jda.api.Permission;
 
 public abstract class Command {
-    public  String name;
-    public  String help;
-    public  Permission[] botPermissions;
-    public  boolean guildOnly;
-    public  boolean ignoreOtherBot= true;
-    public  String usage;
+    public String name;
+    public String help;
+    public Permission[] botPermissions;
+    public boolean guildOnly;
+    public boolean ignoreOtherBot= true;
+    public String usage;
 
     public abstract void execute(CommandEvent event);
 

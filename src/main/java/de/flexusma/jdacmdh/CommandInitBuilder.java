@@ -14,75 +14,75 @@ import de.flexusma.jdacmdh.debug.Logger;
 import de.flexusma.jdacmdh.exception.DatabaseInitializationFailedException;
 import net.dv8tion.jda.api.entities.Activity;
 
-import java.nio.file.Path;
-
 public class CommandInitBuilder {
 
-     LogType logLevel;
-     boolean writeToFile = true;
-     String path = null;
-     Database db = null;
-     boolean isDatabase = false;
-     CommandPreferences commandPreferences;
-     Activity activity=null;
-     BeforeCommandExecution listener;
-     IntiCommands cmds = null;
+    LogType logLevel;
+    boolean writeToFile = true;
+    String path = null;
+    Database db;
+    boolean isDatabase;
+    CommandPreferences commandPreferences;
+    Activity activity;
+    BeforeCommandExecution listener;
+    IntiCommands cmds;
 
-     //default overrides
-    Command MsgPrivateOnGuildOnly=null;
-    Command helpCommand=null;
+    //default overrides
+    Command MsgPrivateOnGuildOnly = null;
+    Command helpCommand = null;
 
-    public CommandInitBuilder log(LogType logLevel, boolean writeToFile, String folder){
-        this.logLevel=logLevel;
-        this.writeToFile=writeToFile;
-        this.path= folder;
+    public CommandInitBuilder log(LogType logLevel, boolean writeToFile, String folder) {
+        this.logLevel = logLevel;
+        this.writeToFile = writeToFile;
+        this.path = folder;
 
         Logger.setup(logLevel, writeToFile, path);
         return this;
     }
 
-    public CommandInitBuilder activity(Activity activity){
-        this.activity=activity ;
+    public CommandInitBuilder activity(Activity activity) {
+        this.activity = activity;
         return this;
     }
 
-    public CommandInitBuilder addBeforeCommandListener(BeforeCommandExecution listener){
-        this.listener=listener ;
+    public CommandInitBuilder addBeforeCommandListener(BeforeCommandExecution listener) {
+        this.listener = listener;
         return this;
     }
 
-    public CommandInitBuilder MsgPrivateOnGuildOnly(Command override){
-        MsgPrivateOnGuildOnly=override;
+    public CommandInitBuilder MsgPrivateOnGuildOnly(Command override) {
+        MsgPrivateOnGuildOnly = override;
         return this;
     }
 
-    public CommandInitBuilder HelpCommand(Command override){
-        helpCommand=override;
+    public CommandInitBuilder HelpCommand(Command override) {
+        helpCommand = override;
         return this;
     }
 
-    public CommandInitBuilder preferences(CommandPreferences preferences){
-        this.commandPreferences=preferences;
+    public CommandInitBuilder preferences(CommandPreferences preferences) {
+        this.commandPreferences = preferences;
         return this;
     }
+
     public CommandInitBuilder database(Database database) {
         try {
-            if (isDatabase = database.initDB(commandPreferences))
+            if (isDatabase = database.initDB(commandPreferences)) {
                 this.db = database;
-            else
+            } else {
                 throw new DatabaseInitializationFailedException("Initialization Failed");
-        }catch (DatabaseInitializationFailedException r){
-            Logger.log(LogType.ERROR,r.getMessage());
+            }
+        } catch (DatabaseInitializationFailedException r) {
+            Logger.log(LogType.ERROR, r.getMessage());
         }
         return this;
     }
-    public CommandInitBuilder commands(Command... commands){
-        this.cmds=new IntiCommands(commands);
+
+    public CommandInitBuilder commands(Command... commands) {
+        this.cmds = new IntiCommands(commands);
         return this;
     }
 
-    public CommandListener build(){
+    public CommandListener build() {
         return new CommandListener(this);
     }
-
 }
