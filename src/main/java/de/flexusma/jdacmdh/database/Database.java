@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Database {
@@ -29,7 +30,7 @@ public class Database {
 
     private static final String SQL_SERIALIZE_OBJECT = "INSERT INTO " + tablename + " (id,<names>) VALUES (<id>, <values>)";
     private static final String SQL_SERIALIZE_UOBJECT = "UPDATE " + tablename + " SET <data> WHERE id = ?";
-    private static final String SQL_DESERIALIZE_OBJECT = "SELECT * FROM " + tablename + "  WHERE id = ?";
+    private static final String SQL_DESERIALIZE_OBJECT = "SELECT * FROM " + tablename + " WHERE id = ?";
     private static final String SQL_CHECKCREATE_TABLE = "CREATE TABLE IF NOT EXISTS ? ( `id` VARCHAR(150) NOT NULL PRIMARY KEY ) ENGINE = MyISAM";
     private static final String SQL_CHECKCREATE_COLUMN = "ALTER TABLE\n "+tablename+" ADD COLUMN\n IF NOT EXISTS\n <value>\n ?;";
 
@@ -232,16 +233,21 @@ public class Database {
     }
 
 
-    public static CommandPreferences prefFromDB(Connection connection, String id) throws SQLException, IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+    public static CommandPreferences prefFromDB(Connection connection, String id) throws SQLException {
         PreparedStatement pstmt = connection
                 .prepareStatement(SQL_DESERIALIZE_OBJECT);
         pstmt.setString(1, id);
+        Logger.log(LogType.DEBUG,"Pref from DB query: "+pstmt.toString());
         ResultSet rs = pstmt.executeQuery();
         rs.next();
+
 
         Object[] args = new Object[prefStructure.getClass().getFields().length];
 
         int col = rs.getMetaData().getColumnCount();
+
+
+
         for (Constructor ctor : prefClass.getConstructors()) {
             Class<?>[] paramTypes = ctor.getParameterTypes();
 
@@ -250,8 +256,8 @@ public class Database {
           //  CommandPreferences preferences = prefStructure;
             if (args.length == paramTypes.length) {
 
-                for(int i =1; i<=col;i++){
-                    args[i-1]=getDataFromRS(prefStructure.getClass().getFields()[i-1].getType(),rs,i);
+                for(int i =1; i<col;i++){
+                    args[i-1]=getDataFromRS(prefStructure.getClass().getFields()[i-1].getType(),rs,i+1);
                   //  preferences.getClass().getMethod("set"+prefStructure.getClass().getFields()[i-1].getName(),prefStructure.getClass().getFields()[i-1].getType()).invoke(preferences,args[i-1]);
                 }
                 // Instantiate the object with the converted arguments.
@@ -261,8 +267,11 @@ public class Database {
                 connection.close();
 
 
-
-                return ((CommandPreferences) ctor.newInstance(args)).returnCastedInstance();
+                try {
+                    return ((CommandPreferences) ctor.newInstance(args)).returnCastedInstance();
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    Logger.log(LogType.DEBUG,"Error at instantiating class instance");
+                }
             }
         }
 
@@ -275,6 +284,7 @@ public class Database {
 
 
     private static Object getDataFromRS(Type target, ResultSet rs, int index) throws SQLException {
+        Logger.log(LogType.DEBUG,"Trying to parse type: "+target.getTypeName()+" for "+rs.getObject(index).toString());
         if (target == Object.class || target == String.class) {
             return rs.getObject(index);
         }
@@ -352,8 +362,9 @@ public class Database {
     public static CommandPreferences initPref(JDA jda, String id) {
         try {
             return Database.prefFromDB(Database.getCon(), id);
-        } catch (SQLException | IOException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException | NoSuchMethodException e) {
-            Logger.log(LogType.WARN, "SQL Error: " + " " + e.getMessage());
+        } catch (SQLException e) {
+            Logger.log(LogType.WARN, "SQL Error1: " + " " + e.getMessage());
+            e.printStackTrace();
             try {
                 prefToDB(Database.getCon(), id, prefStructure);
             } catch (SQLException | IllegalAccessException ex) {
