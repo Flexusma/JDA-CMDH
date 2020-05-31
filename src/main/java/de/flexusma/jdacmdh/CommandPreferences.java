@@ -13,30 +13,30 @@ import de.flexusma.jdacmdh.utils.Emoticons;
 import javax.annotation.Nullable;
 import java.io.Serializable;
 
-    public class CommandPreferences implements Serializable {
+public class CommandPreferences implements Serializable {
 
     public String Prefix = "!";
     public int volume = 100;
-    private Emoticons emoticons = new Emoticons("✔","⚠","✘");
+    private Emoticons emoticons = new Emoticons("✔", "⚠", "✘");
 
-    public CommandPreferences(String prefix, int volume){
-        this.Prefix=prefix;
-        this.volume=volume;
+    public CommandPreferences(String prefix, int volume) {
+        this.Prefix = prefix;
+        this.volume = volume;
     }
 
 
     public CommandPreferences(@Nullable String prefix, @Nullable Emoticons emoticons) {
-        if(prefix!=null) this.setPrefix(prefix);
-        if(emoticons!=null) this.setEmoticons(emoticons);
+        if (prefix != null) this.setPrefix(prefix);
+        if (emoticons != null) this.setEmoticons(emoticons);
     }
 
 
     public CommandPreferences(@Nullable String prefix) {
-        if(prefix!=null) this.setPrefix(prefix);
+        if (prefix != null) this.setPrefix(prefix);
     }
 
 
-    public CommandPreferences returnCastedInstance(){
+    public CommandPreferences returnCastedInstance() {
         return null;
     }
 

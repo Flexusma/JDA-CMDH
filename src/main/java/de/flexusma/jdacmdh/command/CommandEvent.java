@@ -7,8 +7,6 @@
 
 package de.flexusma.jdacmdh.command;
 
-
-
 import de.flexusma.jdacmdh.CommandPreferences;
 import de.flexusma.jdacmdh.utils.embeds.EmbeddedBuilder;
 import de.flexusma.jdacmdh.utils.embeds.MessageEmbedField;
@@ -129,7 +127,6 @@ public class CommandEvent {
     }
 
 
-
     Guild guild;
     MessageChannel channel;
     JDA jda;
@@ -145,121 +142,103 @@ public class CommandEvent {
 
     CommandPreferences pref;
 
-    public CommandEvent(MessageReceivedEvent e, CommandPreferences pref, String Args, HashMap<String,Command> cmdList){
-        if(e.isFromGuild())
-            this.guild=e.getGuild();
-        this.channel=e.getChannel();
-        this.jda=e.getJDA();
-        this.mRevE=e;
-        this.sender=e.getAuthor();
-        this.mes=e.getMessage();
-        this.creTime=e.getMessage().getTimeCreated();
-        if(e.isFromGuild())
-            this.textChannel=e.getTextChannel();
-        this.pref=pref;
-        if(e.isFromGuild())
-            this.member=e.getMember();
-        this.args=Args;
-        this.commands= new ArrayList(cmdList.values());
-        if(e.isFromGuild())
+    public CommandEvent(MessageReceivedEvent e, CommandPreferences pref, String Args, HashMap<String, Command> cmdList) {
+        if (e.isFromGuild()) {
+            this.guild = e.getGuild();
+        }
+        this.channel = e.getChannel();
+        this.jda = e.getJDA();
+        this.mRevE = e;
+        this.sender = e.getAuthor();
+        this.mes = e.getMessage();
+        this.creTime = e.getMessage().getTimeCreated();
+        if (e.isFromGuild()) {
+            this.textChannel = e.getTextChannel();
+        }
+        this.pref = pref;
+        if (e.isFromGuild()) {
+            this.member = e.getMember();
+        }
+        this.args = Args;
+        this.commands = new ArrayList<>(cmdList.values());
+        if (e.isFromGuild()) {
             this.mentions = e.getMessage().getMentionedMembers();
-
+        }
     }
 
     @Deprecated
-    public void replySuccessOld(String title, String description, List<MessageEmbed.Field> embds){
-        if(mRevE.isFromGuild())
-        textChannel.sendMessage(
-                EmbeddedBuilder.createOld(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
-        ).queue();
-        else channel.sendMessage(
-                EmbeddedBuilder.createOld(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
-        ).queue();
+    public void replySuccessOld(String title, String description, List<MessageEmbed.Field> embds) {
+        if (mRevE.isFromGuild()) {
+            textChannel.sendMessage(EmbeddedBuilder.createOld(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
+        } else {
+            channel.sendMessage(EmbeddedBuilder.createOld(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
+        }
     }
+
     @Deprecated
-    public void replyWarnOld(String title, String description, List<MessageEmbed.Field> embds){
-        if(mRevE.isFromGuild())
-        textChannel.sendMessage(
-                EmbeddedBuilder.createOld(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
-        ).queue();
-        else
-            channel.sendMessage(
-                    EmbeddedBuilder.createOld(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
-            ).queue();
+    public void replyWarnOld(String title, String description, List<MessageEmbed.Field> embds) {
+        if (mRevE.isFromGuild()) {
+            textChannel.sendMessage(EmbeddedBuilder.createOld(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
+        } else {
+            channel.sendMessage(EmbeddedBuilder.createOld(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
+        }
     }
+
     @Deprecated
-    public void replyErrorOld(String title, String description, List<MessageEmbed.Field> embds){
-        if(mRevE.isFromGuild())
-        textChannel.sendMessage(
-                EmbeddedBuilder.createOld(pref.getEmoticons().error+title, description, Color.RED,embds).build()
-        ).queue();
-        else
-            channel.sendMessage(
-                    EmbeddedBuilder.createOld(pref.getEmoticons().error+title, description, Color.RED,embds).build()
-            ).queue();
+    public void replyErrorOld(String title, String description, List<MessageEmbed.Field> embds) {
+        if (mRevE.isFromGuild()) {
+            textChannel.sendMessage(EmbeddedBuilder.createOld(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
+        } else {
+            channel.sendMessage(EmbeddedBuilder.createOld(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
+        }
     }
 
-
-    public void replySuccess(String title, String description, List<MessageEmbedField> embds){
-        if(mRevE.isFromGuild())
-            textChannel.sendMessage(
-                    EmbeddedBuilder.create(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
-            ).queue();
-        else channel.sendMessage(
-                EmbeddedBuilder.create(pref.getEmoticons().success+title, description, Color.GREEN,embds).build()
-        ).queue();
-    }
-    public void replyWarn(String title, String description, List<MessageEmbedField> embds){
-        if(mRevE.isFromGuild())
-            textChannel.sendMessage(
-                    EmbeddedBuilder.create(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
-            ).queue();
-        else
-            channel.sendMessage(
-                    EmbeddedBuilder.create(pref.getEmoticons().warn+title, description, Color.ORANGE,embds).build()
-            ).queue();
-    }
-    public void replyError(String title, String description, List<MessageEmbedField> embds){
-        if(mRevE.isFromGuild())
-            textChannel.sendMessage(
-                    EmbeddedBuilder.create(pref.getEmoticons().error+title, description, Color.RED,embds).build()
-            ).queue();
-        else
-            channel.sendMessage(
-                    EmbeddedBuilder.create(pref.getEmoticons().error+title, description, Color.RED,embds).build()
-            ).queue();
+    public void replySuccess(String title, String description, List<MessageEmbedField> embds) {
+        if (mRevE.isFromGuild()) {
+            textChannel.sendMessage(EmbeddedBuilder.create(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
+        } else {
+            channel.sendMessage(EmbeddedBuilder.create(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
+        }
     }
 
+    public void replyWarn(String title, String description, List<MessageEmbedField> embds) {
+        if (mRevE.isFromGuild()) {
+            textChannel.sendMessage(EmbeddedBuilder.create(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
+        } else {
+            channel.sendMessage(EmbeddedBuilder.create(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
+        }
+    }
 
-    public void reply(Message e){
-        if(mRevE.isFromGuild())
-        textChannel.sendMessage(
-                e
-        ).queue();
-        else
-            channel.sendMessage(
-                    e
-            ).queue();
+    public void replyError(String title, String description, List<MessageEmbedField> embds) {
+        if (mRevE.isFromGuild()) {
+            textChannel.sendMessage(EmbeddedBuilder.create(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
+        } else {
+            channel.sendMessage(EmbeddedBuilder.create(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
+        }
     }
-    public void reply(MessageEmbed e){
-        if(mRevE.isFromGuild())
-        textChannel.sendMessage(
-                e
-        ).queue();
-        else
-            channel.sendMessage(
-                    e
-            ).queue();
+
+    public void reply(Message e) {
+        if (mRevE.isFromGuild()) {
+            textChannel.sendMessage(e).queue();
+        } else {
+            channel.sendMessage(e).queue();
+        }
     }
-    public void reply(String e){
-        if(mRevE.isFromGuild())
-        textChannel.sendMessage(
-                e
-        ).queue();
-        else
-            channel.sendMessage(
-                e
-        ).queue();
+
+    public void reply(MessageEmbed e) {
+        if (mRevE.isFromGuild()) {
+            textChannel.sendMessage(e).queue();
+        } else {
+            channel.sendMessage(e).queue();
+        }
+    }
+
+    public void reply(String e) {
+        if (mRevE.isFromGuild()) {
+            textChannel.sendMessage(e).queue();
+        } else {
+            channel.sendMessage(e).queue();
+        }
     }
 
     public void deleteMessage() {
@@ -279,7 +258,5 @@ public class CommandEvent {
     public void replyPrivate(String e) {
         this.getSender().openPrivateChannel().queue((channel) -> channel.sendMessage(e).queue());
     }
-
-
 
 }

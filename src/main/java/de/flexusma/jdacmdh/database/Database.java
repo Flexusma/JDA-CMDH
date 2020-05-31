@@ -32,7 +32,7 @@ public class Database {
     private static final String SQL_SERIALIZE_UOBJECT = "UPDATE " + tablename + " SET <data> WHERE id = ?";
     private static final String SQL_DESERIALIZE_OBJECT = "SELECT * FROM " + tablename + " WHERE id = ?";
     private static final String SQL_CHECKCREATE_TABLE = "CREATE TABLE IF NOT EXISTS ? ( `id` VARCHAR(150) NOT NULL PRIMARY KEY ) ENGINE = MyISAM";
-    private static final String SQL_CHECKCREATE_COLUMN = "ALTER TABLE\n "+tablename+" ADD COLUMN\n IF NOT EXISTS\n <value>\n ?;";
+    private static final String SQL_CHECKCREATE_COLUMN = "ALTER TABLE\n " + tablename + " ADD COLUMN\n IF NOT EXISTS\n <value>\n ?;";
 
     private static String url;
     private static String user;
@@ -72,8 +72,8 @@ public class Database {
     private boolean checkDatabase(CommandPreferences preferences) {
 
         //checking class type of Preferences
-        Logger.log(LogType.DEBUG,"Class name of Preferences: "+preferences.getClass().getName());
-        prefClass=preferences.getClass();
+        Logger.log(LogType.DEBUG, "Class name of Preferences: " + preferences.getClass().getName());
+        prefClass = preferences.getClass();
 
 
         Logger.log(LogType.INFO, "Checking Database connection...");
@@ -93,79 +93,76 @@ public class Database {
         Logger.log(LogType.INFO, "Database connection established.");
         Logger.log(LogType.INFO, "Checking Database setup: Tables...");
 
-        if(!checkTableExists(tablename)) return false;
+        if (!checkTableExists(tablename)) return false;
         Logger.log(LogType.INFO, "Checking Database setup: Columns...");
-        Logger.log(LogType.DEBUG, preferences.getClass().getFields().length+"");
+        Logger.log(LogType.DEBUG, preferences.getClass().getFields().length + "");
         for (Field f : preferences.getClass().getFields()) {
-            Logger.log(LogType.DEBUG, "Field["+f.getName()+"] "+f.getType());
-            if(!checkColumnExists(f.getName(),f)) return false;
+            Logger.log(LogType.DEBUG, "Field[" + f.getName() + "] " + f.getType());
+            if (!checkColumnExists(f.getName(), f)) return false;
         }
         Logger.log(LogType.INFO, "Database check complete! starting...");
-        prefStructure=preferences;
+        prefStructure = preferences;
         return true;
     }
 
 
-
-    private boolean checkTableExists(String tableName){
+    private boolean checkTableExists(String tableName) {
         try {
-            String query = SQL_CHECKCREATE_TABLE.replace("?", "`"+tableName+"`");
+            String query = SQL_CHECKCREATE_TABLE.replace("?", "`" + tableName + "`");
             PreparedStatement pstmt = getCon().prepareStatement(query);
             pstmt.execute();
             pstmt.close();
 
-        }catch (SQLException e){
-            Logger.log(LogType.ERROR, "Error while checking Table: "+e.getErrorCode()+"|"+e.getMessage());
+        } catch (SQLException e) {
+            Logger.log(LogType.ERROR, "Error while checking Table: " + e.getErrorCode() + "|" + e.getMessage());
             return false;
         }
         Logger.log(LogType.INFO, "Checked / Created Table.");
         return true;
     }
 
-    private boolean checkColumnExists(String colummnName, Field field){
+    private boolean checkColumnExists(String colummnName, Field field) {
         try {
-            String s = SQL_CHECKCREATE_COLUMN.replace("<value>","`"+colummnName+"`");
+            String s = SQL_CHECKCREATE_COLUMN.replace("<value>", "`" + colummnName + "`");
             JDBCType type = JAVAToSQLDatatype.convertType(field.getType());
-            if(type!=null){
-                Logger.log(LogType.DEBUG,type.getName());
-                if(type.equals(JDBCType.LONGVARCHAR))
-                    s=s.replace("?", "LONGTEXT NOT NULL");
+            if (type != null) {
+                Logger.log(LogType.DEBUG, type.getName());
+                if (type.equals(JDBCType.LONGVARCHAR))
+                    s = s.replace("?", "LONGTEXT NOT NULL");
                 else
-                    s=s.replace("?", type.getName()+ " NOT NULL");
-            }else{
-                Logger.log(LogType.ERROR, "Error while checking/creating Column["+colummnName+"].  Please make sure that your variable is of the supported Datatypes! Please only make sure only Database Variables are public!");
+                    s = s.replace("?", type.getName() + " NOT NULL");
+            } else {
+                Logger.log(LogType.ERROR, "Error while checking/creating Column[" + colummnName + "].  Please make sure that your variable is of the supported Datatypes! Please only make sure only Database Variables are public!");
                 return false;
             }
-            Logger.log(LogType.DEBUG,s);
+            Logger.log(LogType.DEBUG, s);
             PreparedStatement pstmt = getCon().prepareStatement(s);
 
 
             pstmt.execute();
             pstmt.close();
 
-        }catch (SQLException e){
-            Logger.log(LogType.ERROR, "Error while checking Column["+colummnName+"]: "+e.getErrorCode()+"|"+e.getMessage());
+        } catch (SQLException e) {
+            Logger.log(LogType.ERROR, "Error while checking Column[" + colummnName + "]: " + e.getErrorCode() + "|" + e.getMessage());
             return false;
         }
-        Logger.log(LogType.INFO, "Checked / Created Column["+colummnName+"]. ");
+        Logger.log(LogType.INFO, "Checked / Created Column[" + colummnName + "]. ");
         return true;
     }
 
 
-
-
     public static void prefToDB(Connection connection, String id, CommandPreferences objectToSerialize) throws SQLException, IllegalAccessException {
-        Field[] fields =prefStructure.getClass().getFields();
-        Logger.log(LogType.DEBUG,fields.length+"");
+        Field[] fields = prefStructure.getClass().getFields();
+        Logger.log(LogType.DEBUG, fields.length + "");
         StringBuilder names = new StringBuilder();
-        int count =0;
-        StringBuilder values= new StringBuilder();
-        for(Field f : fields){
-            if(count==0){
-                names.append("`"+f.getName()+"`");
+        int count = 0;
+        StringBuilder values = new StringBuilder();
+        for (Field f : fields) {
+            if (count == 0) {
+                names.append("`" + f.getName() + "`");
                 values.append("?");
             } else {
-                names.append(",`"+f.getName()+"`");
+                names.append(",`" + f.getName() + "`");
                 values.append(",?");
             }
 
@@ -173,60 +170,59 @@ public class Database {
         }
 
 
-        String query =SQL_SERIALIZE_OBJECT.replace("<names>",names.toString());
-        query=query.replace("<id>",id);
-        query=query.replace("<values>",values.toString());
+        String query = SQL_SERIALIZE_OBJECT.replace("<names>", names.toString());
+        query = query.replace("<id>", id);
+        query = query.replace("<values>", values.toString());
 
 
         PreparedStatement pstmt = connection.prepareStatement(query);
-        int counter =1;
-        for(Field f : fields) {
-            setPreparedData(f,objectToSerialize,pstmt,counter);
+        int counter = 1;
+        for (Field f : fields) {
+            setPreparedData(f, objectToSerialize, pstmt, counter);
             counter++;
         }
-        Logger.log(LogType.DEBUG,"prefDB: "+query);
+        Logger.log(LogType.DEBUG, "prefDB: " + query);
         pstmt.executeUpdate();
         pstmt.close();
         Logger.log(LogType.INFO, "Java object serialized to database. Object: "
                 + objectToSerialize);
     }
-    
+
 
     public static void uprefToDB(Connection connection, String id, CommandPreferences objectToSerialize) throws SQLException, IllegalAccessException {
 
 
-        Field[] fields =objectToSerialize.getClass().getFields();
+        Field[] fields = objectToSerialize.getClass().getFields();
         List<String> data = new ArrayList<>();
 
-        for(Field f : fields){
-            data.add(createSQLData(f,objectToSerialize));
+        for (Field f : fields) {
+            data.add(createSQLData(f, objectToSerialize));
         }
-        StringBuilder updateData= new StringBuilder();
-        int count=0;
-        for(String s :data){
-            if(count==0)
-            updateData.append(s);
-            else updateData.append(","+s);
+        StringBuilder updateData = new StringBuilder();
+        int count = 0;
+        for (String s : data) {
+            if (count == 0)
+                updateData.append(s);
+            else updateData.append("," + s);
             count++;
         }
 
-        String query =SQL_SERIALIZE_UOBJECT.replace("<data>",updateData);
+        String query = SQL_SERIALIZE_UOBJECT.replace("<data>", updateData);
 
 
         PreparedStatement pstmt = connection.prepareStatement(query);
 
 
-
         // just setting the class name
 
 
-        int counter =1;
-        for(Field f : fields) {
-            setPreparedData(f,objectToSerialize,pstmt,counter);
+        int counter = 1;
+        for (Field f : fields) {
+            setPreparedData(f, objectToSerialize, pstmt, counter);
             counter++;
         }
         pstmt.setString(counter, id);
-        Logger.log(LogType.DEBUG,pstmt.toString());
+        Logger.log(LogType.DEBUG, pstmt.toString());
         pstmt.executeUpdate();
         pstmt.close();
         Logger.log(LogType.INFO, "Updated preferences succesfully!");
@@ -252,8 +248,8 @@ public class Database {
             Class<?>[] paramTypes = ctor.getParameterTypes();
 
             // If the arity matches, let's use it.
-            Logger.log(LogType.DEBUG,args.length+" | "+paramTypes.length);
-          //  CommandPreferences preferences = prefStructure;
+            Logger.log(LogType.DEBUG, args.length + " | " + paramTypes.length);
+            //  CommandPreferences preferences = prefStructure;
             if (args.length == paramTypes.length) {
 
                 for(int i =1; i<col;i++){
@@ -274,9 +270,6 @@ public class Database {
                 }
             }
         }
-
-
-
 
 
         return null;
@@ -317,46 +310,45 @@ public class Database {
 
 
     private static String createSQLData(Field field, CommandPreferences preferences) throws SQLException, IllegalAccessException {
-        return "`" + field.getName()+"` = ?";
+        return "`" + field.getName() + "` = ?";
     }
 
     private static void setPreparedData(Field field, CommandPreferences cpreferences, PreparedStatement pr, int index) throws SQLException, IllegalAccessException {
 
-        Logger.log(LogType.DEBUG,"Class name of newPreferences: "+cpreferences.getClass().getName());
-        Logger.log(LogType.DEBUG,"Class name of storedPreferences: "+prefClass.getName());
+        Logger.log(LogType.DEBUG, "Class name of newPreferences: " + cpreferences.getClass().getName());
+        Logger.log(LogType.DEBUG, "Class name of storedPreferences: " + prefClass.getName());
 
         CommandPreferences preferences = cpreferences.returnCastedInstance();
 
-        Logger.log(LogType.DEBUG,cpreferences.getClass().getName()+" class is to be setpreparedData");
+        Logger.log(LogType.DEBUG, cpreferences.getClass().getName() + " class is to be setpreparedData");
 
         Type target = field.getType();
         if (target == Object.class || target == String.class) {
-             pr.setObject(index,field.get(preferences));
+            pr.setObject(index, field.get(preferences));
         }
         if (target == Byte.class || target == byte.class) {
-            pr.setByte(index,field.getByte(preferences));
+            pr.setByte(index, field.getByte(preferences));
         }
         if (target == Short.class || target == short.class) {
-            pr.setShort(index,field.getShort(preferences));
+            pr.setShort(index, field.getShort(preferences));
         }
         if (target == Integer.class || target == int.class) {
-            pr.setInt(index,field.getInt(preferences));
+            pr.setInt(index, field.getInt(preferences));
         }
         if (target == Long.class || target == long.class) {
-            pr.setLong(index,field.getLong(preferences));
+            pr.setLong(index, field.getLong(preferences));
         }
         if (target == Float.class || target == float.class) {
-            pr.setFloat(index,field.getFloat(preferences));
+            pr.setFloat(index, field.getFloat(preferences));
         }
         if (target == Double.class || target == double.class) {
-            pr.setObject(index,field.getDouble(preferences));
+            pr.setObject(index, field.getDouble(preferences));
         }
         if (target == Boolean.class || target == boolean.class) {
-            pr.setObject(index,field.getBoolean(preferences));
+            pr.setObject(index, field.getBoolean(preferences));
         }
 
     }
-
 
 
     public static CommandPreferences initPref(JDA jda, String id) {
@@ -379,7 +371,7 @@ public class Database {
         try {
             prefToDB(Database.getCon(), id, pref);
         } catch (SQLException | IllegalAccessException e) {
-            Logger.log(LogType.WARN, "SQL Error: "  + " " + e.getMessage());
+            Logger.log(LogType.WARN, "SQL Error: " + " " + e.getMessage());
             try {
                 uprefToDB(Database.getCon(), id, pref);
             } catch (SQLException | IllegalAccessException e1) {

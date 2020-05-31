@@ -7,18 +7,11 @@
 
 package de.flexusma.jdacmdh.debug;
 
-import de.flexusma.jdacmdh.CommandInitBuilder;
-import de.flexusma.jdacmdh.CommandListener;
 import de.flexusma.jdacmdh.exception.LogFileSaveError;
-import jdk.nashorn.internal.runtime.regexp.joni.WarnCallback;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,7 +30,7 @@ public class Logger {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
-    public static LogType logLevel= LogType.WARN;
+    public static LogType logLevel = LogType.WARN;
     public static String loggerName = "JDA-CMDH | Log: ";
     public static String folder = "logs/";
     private static Path file = Paths.get("logs/");
@@ -60,11 +53,11 @@ public class Logger {
 
     }
 
-    public static void setup(LogType loglevel, boolean writeToFile,String logfile) {
+    public static void setup(LogType loglevel, boolean writeToFile, String logfile) {
         System.out.println(logLevel.level);
         logLevel = loglevel;
-        forceDisableFileLog=!writeToFile;
-        folder =logfile;
+        forceDisableFileLog = !writeToFile;
+        folder = logfile;
 
     }
 
@@ -81,7 +74,7 @@ public class Logger {
         folder = path;
     }
 
-    private static void debugLog(LogType toLog, String info){
+    private static void debugLog(LogType toLog, String info) {
         if (toLog.level <= logLevel.getLevel()) {
             String msg = getColor(toLog) + loggerName + toLog.getType() + " | " + info + ANSI_RESET;
             System.out.println(msg);
@@ -92,11 +85,11 @@ public class Logger {
 
 
         if (logFileDate.equalsIgnoreCase("")) {
-            logFileDate = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format( new Date(System.currentTimeMillis()));
-            logFileDate=logFileDate.replace(" ", "");
-            logFileDate=logFileDate.replace(":", "");
-            logFileDate+=".log";
-            file= Paths.get(folder+logFileDate);
+            logFileDate = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date(System.currentTimeMillis()));
+            logFileDate = logFileDate.replace(" ", "");
+            logFileDate = logFileDate.replace(":", "");
+            logFileDate += ".log";
+            file = Paths.get(folder + logFileDate);
         }
 
         if (toLog.level <= logLevel.getLevel()) {
@@ -106,11 +99,11 @@ public class Logger {
                 checkFileCreate();
                 FileWriter writer = null;
                 try {
-                    writer = new FileWriter(String.valueOf(file),true);
+                    writer = new FileWriter(String.valueOf(file), true);
                 } catch (IOException e) {
                     Logger.debugLog(LogType.WARN, "Logfile path was invalid, using default fallback path ~/logs/ \nPlease check the specified logfile path, to avoid future complications!");
                     try {
-                        writer = new FileWriter("logs/" + logFileDate,true);
+                        writer = new FileWriter("logs/" + logFileDate, true);
                     } catch (IOException ioException) {
                         try {
                             throw new LogFileSaveError(ioException.getMessage());
@@ -123,19 +116,19 @@ public class Logger {
                                 "If the issue persists, please create an issue on https://github.com/Flexusma/JDA-CMDH/issues with a copy of the full debug console log! (change loglevel to LogLevel.DEBUG)");
                     }
                 }
-                
-                if(writer!=null){
+
+                if (writer != null) {
                     BufferedWriter bufferedWriter = new BufferedWriter(writer);
-                    msg ="("+new Date().toString()+")"+ loggerName + toLog.getType() + " | " + info;
+                    msg = "(" + new Date().toString() + ")" + loggerName + toLog.getType() + " | " + info;
                     try {
-                        bufferedWriter.write(msg+"\n");
+                        bufferedWriter.write(msg + "\n");
                         bufferedWriter.close();
                     } catch (IOException e) {
-                        Logger.debugLog(LogType.WARN, "An Error occured while writing to the log file:\n"+e.toString());
+                        Logger.debugLog(LogType.WARN, "An Error occured while writing to the log file:\n" + e.toString());
                     }
 
                 }
-                
+
             }
 
         }
@@ -145,13 +138,12 @@ public class Logger {
         try {
             Files.createDirectories(file.getParent());
             Path myObj = Files.createFile(file);
-            if (myObj!=null) {
+            if (myObj != null) {
                 System.out.println("File created: " + myObj.toString());
             }
-        }catch (FileAlreadyExistsException ey){
-           // Logger.debugLog(LogType.DEBUG,"File already Exists, continuing...");
-        }
-        catch (IOException e) {
+        } catch (FileAlreadyExistsException ey) {
+            // Logger.debugLog(LogType.DEBUG,"File already Exists, continuing...");
+        } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }

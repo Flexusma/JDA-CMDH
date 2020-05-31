@@ -20,7 +20,6 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
@@ -34,27 +33,11 @@ public class CommandListener extends ListenerAdapter {
     CommandPreferences preferences;
     private boolean isDatabase;
     private CommandInitBuilder builder;
-    private Activity customActivity = null;
+    private Activity customActivity;
     BeforeCommandExecution listener;
 
     private static IntiCommands cmd = new IntiCommands(
             new Help()
-         /*   new About(),
-            new Delete(),
-            new Prefix(),
-            new Play(),
-            new SkipTrack(),
-
-            new StopPlayback(),
-            new Resume(),
-            new Pause(),
-            new AutoDelete(),
-
-            new Watch2Gether(),
-            new Queue(),
-            new Volume(),
-            new Lewd(),
-            new de.flexusma.wavybot.cmd.Activity()*/
     );
 
     public CommandListener(CommandInitBuilder cmbdBuilder) {
@@ -62,28 +45,28 @@ public class CommandListener extends ListenerAdapter {
 
         this.isDatabase = cmbdBuilder.isDatabase;
         this.preferences = cmbdBuilder.commandPreferences;
-        builder=cmbdBuilder;
+        builder = cmbdBuilder;
 
-        if(cmbdBuilder.helpCommand!=null)
-            cmd.cmds.replace("help",cmbdBuilder.helpCommand);
+        if (cmbdBuilder.helpCommand != null) {
+            cmd.cmds.replace("help", cmbdBuilder.helpCommand);
+        }
 
-        customActivity=cmbdBuilder.activity;
+        customActivity = cmbdBuilder.activity;
 
-        listener=cmbdBuilder.listener;
-
+        listener = cmbdBuilder.listener;
     }
 
     //guild messages
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.isFromGuild() && isDatabase)
+        if (event.isFromGuild() && isDatabase) {
             preferences = Database.initPref(event.getJDA(), event.getGuild().getId());
+        }
 
-        Logger.log(LogType.DEBUG, "onMessagerecieved: Sender: "+event.getMessage().getAuthor().getName() +"["+event.getMessage().getAuthor().getId()+"]");
+        Logger.log(LogType.DEBUG, "onMessagerecieved: Sender: " + event.getMessage().getAuthor().getName() + "[" + event.getMessage().getAuthor().getId() + "]");
         if (!event.getMessage().getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
             Logger.log(LogType.DEBUG, "Message recieved: " + event.getMessage().getContentRaw());
-            if (event.getMessage().getContentRaw().startsWith(preferences.getPrefix()) ||
-                    event.getMessage().getContentRaw().replace("!", "").startsWith(event.getJDA().getSelfUser().getAsMention()) ){
+            if (event.getMessage().getContentRaw().startsWith(preferences.getPrefix()) || event.getMessage().getContentRaw().replace("!", "").startsWith(event.getJDA().getSelfUser().getAsMention())) {
                 Logger.log(LogType.DEBUG, "Command detected");
                 handlercommand(event, preferences);
             }
@@ -106,8 +89,9 @@ public class CommandListener extends ListenerAdapter {
             //Logger.log(LogType.DEBUG,command+" "+registercmds);
             if (registercmds.equals(command)) {
                 String args = String.join(" ", Arrays.copyOfRange(raw, 1, raw.length)).replaceFirst(registercmds, "");
-                if (event.getMessage().getContentRaw().startsWith(event.getJDA().getSelfUser().getAsMention()))
+                if (event.getMessage().getContentRaw().startsWith(event.getJDA().getSelfUser().getAsMention())) {
                     args = args.replaceFirst(" ", "");
+                }
                 Logger.log(LogType.DEBUG, "Command Arguments: " + args);
                 Command command1 = cmd.cmds.get(registercmds);
                 List<Permission> missingPerms = new ArrayList<>();
@@ -127,71 +111,41 @@ public class CommandListener extends ListenerAdapter {
                     Logger.log(LogType.WARN, "Missing Permissions on command:[" + command1.getName() + "] at guild:[" + event.getGuild().getName() + "|" + event.getGuild().getId() + "]");
                     event1.reply(EmbeddedBuilder.create("Error, not enough Permissions!", "Hey, it seems that I'm missing some Permissions... Please check that!", Color.red, fields).build());
                 } else if (!event.isFromGuild() && command1.guildOnly) {
-                    if (builder.MsgPrivateOnGuildOnly != null) builder.MsgPrivateOnGuildOnly.execute(event1);
-                    else new MsgPrivateOnGuildOnly().execute(event1);
-                } else
-
-                    if (!(event.getAuthor().isBot() && command1.ignoreOtherBot)) {
-                    executeCommand(command1,event1,event,commandPreferences);
+                    if (builder.MsgPrivateOnGuildOnly != null) {
+                        builder.MsgPrivateOnGuildOnly.execute(event1);
+                    } else {
+                        new MsgPrivateOnGuildOnly().execute(event1);
                     }
+                } else if (!(event.getAuthor().isBot() && command1.ignoreOtherBot)) {
+                    executeCommand(command1, event1, event, commandPreferences);
+                }
             }
         }
     }
 
 
-    void executeCommand(Command c, CommandEvent e, MessageReceivedEvent me, CommandPreferences pref){
-        if(listener!=null) {
+    void executeCommand(Command c, CommandEvent e, MessageReceivedEvent me, CommandPreferences pref) {
+        if (listener != null) {
             if (listener.onBeforeExecution(me, pref)) {
                 Logger.log(LogType.DEBUG, "BeforeListener returned true, executing command!");
                 c.execute(e);
-            } else Logger.log(LogType.DEBUG, "BeforeListener returned false, throwing away command request!");
-        }else c.execute(e);
+            } else {
+                Logger.log(LogType.DEBUG, "BeforeListener returned false, throwing away command request!");
+            }
+        } else {
+            c.execute(e);
+        }
     }
 
 
     @Override
     public void onReady(@Nonnull ReadyEvent event) {
-        if(customActivity==null)
+        if (customActivity != null) {
+            event.getJDA().getPresence().setActivity(customActivity);
+        }else{
             event.getJDA().getPresence().setActivity(Activity.of(Activity.ActivityType.DEFAULT,""));
-        else event.getJDA().getPresence().setActivity(customActivity);
+        }
+
         super.onReady(event);
     }
-
-
- /*  public void onUserActivityStart(@Nonnull UserActivityStartEvent event) {
-
-        Game now = Database.getGame(event.getJDA(),event.getMember().getId(),event.getNewActivity().getName());
-        if(now!=null){
-
-            now.startPlay(event.getNewActivity().getName(),System.currentTimeMillis());
-        }else{
-            now=new Game();
-            now.startPlay(event.getNewActivity().getName(),System.currentTimeMillis());
-        }
-        Database.saveGame(event.getJDA(),event.getMember().getId(),now);
-        super.onUserActivityStart(event);
-    }*/
-
- /*   @Override
-    public void onUserActivityEnd(@Nonnull UserActivityEndEvent event) {
-
-
-        Logger.log(LogType.DEBUG,"Activity: "+event.getOldActivity().getName()+" | "+ event.getOldActivity().getTimestamps().getElapsedTime(ChronoUnit.SECONDS));
-
-        if(now!=null){
-            now.addPlayTime(Duration.ofMillis(event.getOldActivity().getTimestamps().getElapsedTime(ChronoUnit.MILLIS)));
-            /*
-            now.startPlay(event.getOldActivity().getName(),event.getOldActivity().getTimestamps().getStart());
-            now.stopPlay(event.getOldActivity().getTimestamps().getEnd());
-
-
-        }else{
-            now=new Game();
-            now.addPlayTime(Duration.ofMillis(event.getOldActivity().getTimestamps().getElapsedTime(ChronoUnit.MILLIS)));
-            /*now.startPlay(event.getOldActivity().getName(),event.getOldActivity().getTimestamps().getStart());
-            now.stopPlay(event.getOldActivity().getTimestamps().getEnd());
-        }
-        Database.saveGame(event.getJDA(),event.getMember().getId(),now);
-        super.onUserActivityEnd(event);
-    }*/
 }
