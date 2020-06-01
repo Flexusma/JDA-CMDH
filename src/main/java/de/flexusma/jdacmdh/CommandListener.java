@@ -142,8 +142,6 @@ public class CommandListener extends ListenerAdapter {
     public void onReady(@Nonnull ReadyEvent event) {
         if (customActivity != null) {
             event.getJDA().getPresence().setActivity(customActivity);
-        }else{
-            event.getJDA().getPresence().setActivity(Activity.of(Activity.ActivityType.DEFAULT,""));
         }
 
         super.onReady(event);
