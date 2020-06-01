@@ -17,12 +17,9 @@ import de.flexusma.jdacmdh.debug.Logger;
 import de.flexusma.jdacmdh.utils.embeds.EmbeddedBuilder;
 import de.flexusma.jdacmdh.utils.embeds.MessageEmbedField;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +30,6 @@ public class CommandListener extends ListenerAdapter {
     CommandPreferences preferences;
     private boolean isDatabase;
     private CommandInitBuilder builder;
-    private Activity customActivity;
     BeforeCommandExecution listener;
 
     private static IntiCommands cmd = new IntiCommands(
@@ -50,8 +46,6 @@ public class CommandListener extends ListenerAdapter {
         if (cmbdBuilder.helpCommand != null) {
             cmd.cmds.replace("help", cmbdBuilder.helpCommand);
         }
-
-        customActivity = cmbdBuilder.activity;
 
         listener = cmbdBuilder.listener;
     }
@@ -135,15 +129,5 @@ public class CommandListener extends ListenerAdapter {
         } else {
             c.execute(e);
         }
-    }
-
-
-    @Override
-    public void onReady(@Nonnull ReadyEvent event) {
-        if (customActivity != null) {
-            event.getJDA().getPresence().setActivity(customActivity);
-        }
-
-        super.onReady(event);
     }
 }

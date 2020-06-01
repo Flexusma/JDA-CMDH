@@ -14,14 +14,12 @@ import de.flexusma.jdacmdh.debug.Logger;
 import de.flexusma.jdacmdh.utils.JAVAToSQLDatatype;
 import net.dv8tion.jda.api.JDA;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Database {

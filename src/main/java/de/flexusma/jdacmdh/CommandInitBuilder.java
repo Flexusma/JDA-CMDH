@@ -12,7 +12,6 @@ import de.flexusma.jdacmdh.database.Database;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
 import de.flexusma.jdacmdh.exception.DatabaseInitializationFailedException;
-import net.dv8tion.jda.api.entities.Activity;
 
 public class CommandInitBuilder {
 
@@ -22,7 +21,6 @@ public class CommandInitBuilder {
     Database db;
     boolean isDatabase;
     CommandPreferences commandPreferences;
-    Activity activity;
     BeforeCommandExecution listener;
     IntiCommands cmds;
 
@@ -36,11 +34,6 @@ public class CommandInitBuilder {
         this.path = folder;
 
         Logger.setup(logLevel, writeToFile, path);
-        return this;
-    }
-
-    public CommandInitBuilder activity(Activity activity) {
-        this.activity = activity;
         return this;
     }
 
