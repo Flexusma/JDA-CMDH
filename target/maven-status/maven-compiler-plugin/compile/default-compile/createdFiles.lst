@@ -1,7 +1,8 @@
-de\flexusma\jdacmdh\utils\embeds\EmbeddedBuilder.class
 de\flexusma\jdacmdh\command\defaults\Help.class
 de\flexusma\jdacmdh\utils\JAVAToSQLDatatype.class
 de\flexusma\jdacmdh\exception\DatabaseInitializationFailedException.class
+de\flexusma\jdacmdh\utils\embeds\EmbededBuilder.class
+de\flexusma\jdacmdh\utils\PreferenceManager.class
 de\flexusma\jdacmdh\command\Command.class
 de\flexusma\jdacmdh\utils\embeds\MessageEmbedField.class
 de\flexusma\jdacmdh\CommandInitBuilder.class

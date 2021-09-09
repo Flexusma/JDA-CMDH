@@ -10,7 +10,8 @@ import de.flexusma.jdacmdh.CommandPreferences;
 import de.flexusma.jdacmdh.command.Command;
 import de.flexusma.jdacmdh.command.CommandEvent;
 import de.flexusma.jdacmdh.database.Database;
-import de.flexusma.jdacmdh.utils.embeds.EmbeddedBuilder;
+import de.flexusma.jdacmdh.utils.PreferenceManager;
+import de.flexusma.jdacmdh.utils.embeds.EmbededBuilder;
 import de.flexusma.jdacmdh.utils.embeds.MessageEmbedField;
 import net.dv8tion.jda.api.Permission;
 
@@ -31,7 +32,7 @@ public class Help extends Command {
     @Override
     public void execute(CommandEvent event) {
         List<MessageEmbedField> fields = new ArrayList<>();
-        CommandPreferences pref = Database.initPref(event.getJDA(), event.getGuild().getId());
+        CommandPreferences pref = PreferenceManager.getPref(event.getGuild().getId());
         if (event.getMessageRecieved().isFromGuild()) {
             fields.add(new MessageEmbedField("**Prefix:**", "The current prefix on this server is " + pref.getPrefix(), false));
         } else {
@@ -42,6 +43,6 @@ public class Help extends Command {
             fields.add(new MessageEmbedField("**" + c.getName() + "**\n", "Usage: ```" + c.getUsage() + "``` \n" + c.getHelp(), false));
         }
 
-        event.reply(EmbeddedBuilder.create("Command Help", "These are all the Commands you can use on this server:", Color.green, fields).build());
+        event.reply(EmbededBuilder.create("Command Help", "These are all the Commands you can use on this server:", Color.green, fields).build());
     }
 }

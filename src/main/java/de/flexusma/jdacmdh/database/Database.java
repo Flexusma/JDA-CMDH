@@ -255,16 +255,19 @@ public class Database {
                   //  preferences.getClass().getMethod("set"+prefStructure.getClass().getFields()[i-1].getName(),prefStructure.getClass().getFields()[i-1].getType()).invoke(preferences,args[i-1]);
                 }
                 // Instantiate the object with the converted arguments.
-                Logger.log(LogType.INFO, "Downloaded + parsed Data from Database");
-                rs.close();
-                pstmt.close();
-                connection.close();
+                Logger.log(LogType.INFO, "Downloaded + parsed Data from Database ["+args[0]+"]");
+
 
 
                 try {
-                    return ((CommandPreferences) ctor.newInstance(args)).returnCastedInstance();
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    Logger.log(LogType.DEBUG,"Error at instantiating class instance");
+                    CommandPreferences pref = ((CommandPreferences) ctor.newInstance(args)).returnCastedInstance();
+
+                    rs.close();
+                    pstmt.close();
+                    connection.close();
+                    return pref;
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                    Logger.log(LogType.DEBUG,"Error at instantiating class instance: "+e);
                 }
             }
         }
@@ -319,6 +322,11 @@ public class Database {
         CommandPreferences preferences = cpreferences.returnCastedInstance();
 
         Logger.log(LogType.DEBUG, cpreferences.getClass().getName() + " class is to be setpreparedData");
+
+        if(preferences==null)
+            Logger.log(LogType.WARN,"Preferences Instance null!");
+        if(field==null)
+            Logger.log(LogType.WARN,"Field is null!");
 
         Type target = field.getType();
         if (target == Object.class || target == String.class) {
