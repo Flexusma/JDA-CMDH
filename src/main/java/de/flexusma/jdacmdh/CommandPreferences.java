@@ -37,7 +37,7 @@ public class CommandPreferences implements Serializable {
 
 
     public CommandPreferences returnCastedInstance() {
-        return null;
+        return (CommandPreferences) this;
     }
 
 

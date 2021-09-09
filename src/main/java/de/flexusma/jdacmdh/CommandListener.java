@@ -14,11 +14,15 @@ import de.flexusma.jdacmdh.command.defaults.MsgPrivateOnGuildOnly;
 import de.flexusma.jdacmdh.database.Database;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
+import de.flexusma.jdacmdh.utils.PreferenceManager;
 import de.flexusma.jdacmdh.utils.embeds.EmbededBuilder;
 import de.flexusma.jdacmdh.utils.embeds.MessageEmbedField;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,12 +36,16 @@ public class CommandListener extends ListenerAdapter {
     private CommandInitBuilder builder;
     BeforeCommandExecution listener;
 
+    private Activity loadedActivity = null;
+
     private static IntiCommands cmd = new IntiCommands(
             new Help()
     );
 
     public CommandListener(CommandInitBuilder cmbdBuilder) {
         cmd = cmbdBuilder.cmds;
+
+        loadedActivity = cmbdBuilder.loadedActivity;
 
         this.isDatabase = cmbdBuilder.isDatabase;
         this.preferences = cmbdBuilder.commandPreferences;
@@ -50,11 +58,20 @@ public class CommandListener extends ListenerAdapter {
         listener = cmbdBuilder.listener;
     }
 
+    @Override
+    public void onReady(@NotNull ReadyEvent event) {
+        super.onReady(event);
+        if(loadedActivity!=null)
+        event.getJDA().getPresence().setActivity(loadedActivity);
+        Logger.log(LogType.INFO,"Bot ready!");
+    }
+
     //guild messages
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.isFromGuild() && isDatabase) {
-            preferences = Database.initPref(event.getJDA(), event.getGuild().getId());
+            preferences = PreferenceManager.getPref(event.getGuild().getId());
+            Logger.log(LogType.DEBUG,"Preferences from Database: "+preferences);
         }
 
         Logger.log(LogType.DEBUG, "onMessagerecieved: Sender: " + event.getMessage().getAuthor().getName() + "[" + event.getMessage().getAuthor().getId() + "]");

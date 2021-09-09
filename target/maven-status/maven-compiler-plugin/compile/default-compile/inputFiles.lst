@@ -1,20 +1,20 @@
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\debug\LogType.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\exception\DatabaseInitializationFailedException.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\BeforeCommandExecution.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandInitBuilder.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\database\Database.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\IntiCommands.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\utils\embeds\EmbeddedBuilder.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\defaults\MsgPrivateOnGuildOnly.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\debug\Logger.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandPreferences.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\exception\NotChildOfCommandPreferencesClass.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\CommandEvent.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\utils\embeds\MessageEmbedField.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\Command.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\defaults\Help.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\ReactionCommand.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\utils\JAVAToSQLDatatype.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\exception\LogFileSaveError.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandListener.java
-C:\Users\craft\OneDrive - willigis-online.de\Dokumente\GitKraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\utils\Emoticons.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\debug\Logger.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\CommandEvent.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\defaults\Help.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\database\Database.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\defaults\MsgPrivateOnGuildOnly.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandInitBuilder.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\exception\LogFileSaveError.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandListener.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\Command.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\utils\Emoticons.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\exception\DatabaseInitializationFailedException.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\utils\embeds\MessageEmbedField.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\IntiCommands.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\command\ReactionCommand.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\exception\NotChildOfCommandPreferencesClass.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\utils\embeds\EmbededBuilder.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\utils\JAVAToSQLDatatype.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\CommandPreferences.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\BeforeCommandExecution.java
+B:\Gitkraken\JDA-CMDH\src\main\java\de\flexusma\jdacmdh\debug\LogType.java

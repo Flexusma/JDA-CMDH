@@ -12,6 +12,7 @@ import de.flexusma.jdacmdh.database.Database;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
 import de.flexusma.jdacmdh.exception.DatabaseInitializationFailedException;
+import net.dv8tion.jda.api.entities.Activity;
 
 public class CommandInitBuilder {
 
@@ -23,6 +24,7 @@ public class CommandInitBuilder {
     CommandPreferences commandPreferences;
     BeforeCommandExecution listener;
     IntiCommands cmds;
+    Activity loadedActivity = null;
 
     //default overrides
     Command MsgPrivateOnGuildOnly = null;
@@ -67,6 +69,12 @@ public class CommandInitBuilder {
         } catch (DatabaseInitializationFailedException r) {
             Logger.log(LogType.ERROR, r.getMessage());
         }
+        return this;
+    }
+
+    public CommandInitBuilder readyStatus(Activity activity){
+        if(activity!=null)
+            this.loadedActivity = activity;
         return this;
     }
 
