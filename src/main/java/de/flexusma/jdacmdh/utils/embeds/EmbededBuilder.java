@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import java.awt.Color;
 import java.util.List;
 
-public class EmbeddedBuilder {
+public class EmbededBuilder {
 
     public static EmbedBuilder create(String title, String desc, Color c, MessageEmbedField... f) {
 

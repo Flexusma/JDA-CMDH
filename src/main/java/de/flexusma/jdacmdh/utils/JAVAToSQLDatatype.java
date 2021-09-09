@@ -28,7 +28,7 @@ public class JAVAToSQLDatatype {
     }
 
     private static boolean check(Type c) {
-        return type.getTypeName().equals(c.getTypeName());
+        return type.getTypeName().equalsIgnoreCase(c.getTypeName());
     }
 
 }

@@ -14,7 +14,7 @@ import de.flexusma.jdacmdh.command.defaults.MsgPrivateOnGuildOnly;
 import de.flexusma.jdacmdh.database.Database;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
-import de.flexusma.jdacmdh.utils.embeds.EmbeddedBuilder;
+import de.flexusma.jdacmdh.utils.embeds.EmbededBuilder;
 import de.flexusma.jdacmdh.utils.embeds.MessageEmbedField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -103,7 +103,7 @@ public class CommandListener extends ListenerAdapter {
                         fields.add(new MessageEmbedField("" + missingPerms.indexOf(p), p.getName(), missingPerms.indexOf(p) % 2 == 0));
                     }
                     Logger.log(LogType.WARN, "Missing Permissions on command:[" + command1.getName() + "] at guild:[" + event.getGuild().getName() + "|" + event.getGuild().getId() + "]");
-                    event1.reply(EmbeddedBuilder.create("Error, not enough Permissions!", "Hey, it seems that I'm missing some Permissions... Please check that!", Color.red, fields).build());
+                    event1.reply(EmbededBuilder.create("Error, not enough Permissions!", "Hey, it seems that I'm missing some Permissions... Please check that!", Color.red, fields).build());
                 } else if (!event.isFromGuild() && command1.guildOnly) {
                     if (builder.MsgPrivateOnGuildOnly != null) {
                         builder.MsgPrivateOnGuildOnly.execute(event1);
