@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 public class CommandPreferences implements Serializable {
 
-    public String Prefix = "!";
+    public String Prefix = "-";
     public int volume = 100;
     private Emoticons emoticons = new Emoticons("✔", "⚠", "✘");
 

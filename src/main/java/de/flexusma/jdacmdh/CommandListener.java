@@ -69,12 +69,17 @@ public class CommandListener extends ListenerAdapter {
     //guild messages
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.isFromGuild() && isDatabase) {
-            preferences = PreferenceManager.getPref(event.getGuild().getId());
-            Logger.log(LogType.DEBUG,"Preferences from Database: "+preferences);
+        try {
+            if (event.isFromGuild() && isDatabase) {
+                preferences = PreferenceManager.getPref(event.getGuild().getId());
+                Logger.log(LogType.DEBUG, "Preferences from Database: " + preferences);
+            }
+        }catch (Exception e){
+            Logger.log(LogType.ERROR,"Error reading preferences for commandHandler: "+e);
+            preferences = new CommandPreferences();
         }
 
-        Logger.log(LogType.DEBUG, "onMessagerecieved: Sender: " + event.getMessage().getAuthor().getName() + "[" + event.getMessage().getAuthor().getId() + "]");
+        Logger.log(LogType.DEBUG, "onMessagerecieved: Guild: " + event.getMessage().getGuild().getName() + " Channel: " + event.getMessage().getChannel().getName() + " Sender: " + event.getMessage().getAuthor().getName() + "[" + event.getMessage().getAuthor().getId() + "]");
         if (!event.getMessage().getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
             Logger.log(LogType.DEBUG, "Message recieved: " + event.getMessage().getContentRaw());
             if (event.getMessage().getContentRaw().startsWith(preferences.getPrefix()) || event.getMessage().getContentRaw().replace("!", "").startsWith(event.getJDA().getSelfUser().getAsMention())) {
