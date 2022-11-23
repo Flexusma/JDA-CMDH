@@ -10,7 +10,6 @@ package de.flexusma.jdacmdh;
 
 import de.flexusma.jdacmdh.utils.Emoticons;
 
-import javax.annotation.Nullable;
 import java.io.Serializable;
 
 public class CommandPreferences implements Serializable {
@@ -25,13 +24,13 @@ public class CommandPreferences implements Serializable {
     }
 
 
-    public CommandPreferences(@Nullable String prefix, @Nullable Emoticons emoticons) {
+    public CommandPreferences( String prefix, Emoticons emoticons) {
         if (prefix != null) this.setPrefix(prefix);
         if (emoticons != null) this.setEmoticons(emoticons);
     }
 
 
-    public CommandPreferences(@Nullable String prefix) {
+    public CommandPreferences( String prefix) {
         if (prefix != null) this.setPrefix(prefix);
     }
 

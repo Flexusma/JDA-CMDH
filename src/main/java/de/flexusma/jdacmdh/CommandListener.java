@@ -9,9 +9,9 @@ package de.flexusma.jdacmdh;
 
 import de.flexusma.jdacmdh.command.Command;
 import de.flexusma.jdacmdh.command.CommandEvent;
+import de.flexusma.jdacmdh.command.SlashCommand;
 import de.flexusma.jdacmdh.command.defaults.Help;
 import de.flexusma.jdacmdh.command.defaults.MsgPrivateOnGuildOnly;
-import de.flexusma.jdacmdh.database.Database;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
 import de.flexusma.jdacmdh.utils.PreferenceManager;
@@ -20,7 +20,9 @@ import de.flexusma.jdacmdh.utils.embeds.MessageEmbedField;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,12 +40,16 @@ public class CommandListener extends ListenerAdapter {
 
     private Activity loadedActivity = null;
 
-    private static IntiCommands cmd = new IntiCommands(
+    private static InitCommands cmd = new InitCommands(
             new Help()
     );
 
+    private static InitSlashCommands slashCommands;
+
     public CommandListener(CommandInitBuilder cmbdBuilder) {
         cmd = cmbdBuilder.cmds;
+        if(cmbdBuilder.slashCommands.size()>0)
+            slashCommands = cmbdBuilder.slashCommands;
 
         loadedActivity = cmbdBuilder.loadedActivity;
 
@@ -59,10 +65,10 @@ public class CommandListener extends ListenerAdapter {
     }
 
     @Override
-    public void onReady(@NotNull ReadyEvent event) {
+    public void onReady(ReadyEvent event) {
         super.onReady(event);
         if(loadedActivity!=null)
-        event.getJDA().getPresence().setActivity(loadedActivity);
+            event.getJDA().getPresence().setActivity(loadedActivity);
         Logger.log(LogType.INFO,"Bot ready!");
     }
 
@@ -151,5 +157,36 @@ public class CommandListener extends ListenerAdapter {
         } else {
             c.execute(e);
         }
+    }
+
+
+    @Override
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        try {
+            if (event.isFromGuild() && isDatabase) {
+                preferences = PreferenceManager.getPref(event.getGuild().getId());
+                Logger.log(LogType.DEBUG, "Preferences from Database: " + preferences);
+            }
+        }catch (Exception e){
+            Logger.log(LogType.ERROR,"Error reading preferences for SlashCommandHandler: "+e);
+            preferences = new CommandPreferences();
+        }
+
+        handleSlashCommand(event);
+
+    }
+
+    private void handleSlashCommand(SlashCommandInteractionEvent event){
+        Logger.log(LogType.INFO, "SlashCommand received: " + event.getName());
+
+        for (SlashCommand slashCommand: slashCommands.cmds.values()) {
+            if(slashCommand.name.equals(event.getName())){
+                event.deferReply().queue();
+                slashCommand.execute(event);
+            }
+
+        }
+
+
     }
 }

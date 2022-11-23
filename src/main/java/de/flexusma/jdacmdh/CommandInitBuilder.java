@@ -8,6 +8,7 @@
 package de.flexusma.jdacmdh;
 
 import de.flexusma.jdacmdh.command.Command;
+import de.flexusma.jdacmdh.command.SlashCommand;
 import de.flexusma.jdacmdh.database.Database;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
@@ -23,7 +24,8 @@ public class CommandInitBuilder {
     boolean isDatabase;
     CommandPreferences commandPreferences;
     BeforeCommandExecution listener;
-    IntiCommands cmds;
+    InitCommands cmds;
+    InitSlashCommands slashCommands;
     Activity loadedActivity = null;
 
     //default overrides
@@ -61,7 +63,7 @@ public class CommandInitBuilder {
 
     public CommandInitBuilder database(Database database) {
         try {
-            if (isDatabase = database.initDB(commandPreferences)) {
+            if (isDatabase == database.initDB(commandPreferences)) {
                 this.db = database;
             } else {
                 throw new DatabaseInitializationFailedException("Initialization Failed");
@@ -79,9 +81,15 @@ public class CommandInitBuilder {
     }
 
     public CommandInitBuilder commands(Command... commands) {
-        this.cmds = new IntiCommands(commands);
+        this.cmds = new InitCommands(commands);
         return this;
     }
+
+    public CommandInitBuilder slashCommands(SlashCommand... commands) {
+        this.slashCommands = new InitSlashCommands(commands);
+        return this;
+    }
+
 
     public CommandListener build() {
         return new CommandListener(this);

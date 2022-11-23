@@ -17,6 +17,8 @@ public abstract class Command {
     public boolean ignoreOtherBot= true;
     public String usage;
 
+
+
     public abstract void execute(CommandEvent event);
 
     public String getName() {

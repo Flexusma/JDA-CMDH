@@ -7,16 +7,21 @@
 package de.flexusma.jdacmdh;
 
 import de.flexusma.jdacmdh.command.Command;
+import de.flexusma.jdacmdh.command.SlashCommand;
 
 import java.util.HashMap;
 
-class IntiCommands {
-    HashMap<String, Command> cmds = new HashMap<>();
+class InitSlashCommands {
+    HashMap<String, SlashCommand> cmds = new HashMap<>();
 
-    IntiCommands(Command... t) {
-        for (Command cmd : t) {
+    InitSlashCommands(SlashCommand... t) {
+        for (SlashCommand cmd : t) {
             cmds.put(cmd.name, cmd);
         }
+    }
+
+    public int size(){
+        return cmds.size();
     }
 
 }
