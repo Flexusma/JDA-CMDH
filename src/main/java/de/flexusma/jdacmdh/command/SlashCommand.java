@@ -29,10 +29,15 @@ public abstract class SlashCommand {
     private boolean hasInit = false;
 
     public SlashCommand(){
+    }
+
+    protected void init(){
         this.jdaCommandData = Commands.slash(this.name,this.description);
         this.jdaCommandData.setGuildOnly(this.guildOnly);
         if(defaultPermissions!=null)this.jdaCommandData.setDefaultPermissions(defaultPermissions);
     }
+
+
 
     protected void addOption(OptionType type, String name, String description) throws IllegalObjectModificationException {
         if(hasInit) throw new IllegalObjectModificationException(this.name);
@@ -80,6 +85,10 @@ public abstract class SlashCommand {
 
     public String getName() {
         return name;
+    }
+
+    public void setInit(){
+        this.hasInit = true;
     }
 
     public Permission[] getBotPermissions() {
