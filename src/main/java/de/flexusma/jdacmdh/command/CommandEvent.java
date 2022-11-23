@@ -12,7 +12,10 @@ import de.flexusma.jdacmdh.utils.embeds.EmbededBuilder;
 import de.flexusma.jdacmdh.utils.embeds.MessageEmbedField;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 import java.awt.*;
 import java.time.OffsetDateTime;
@@ -30,11 +33,11 @@ public class CommandEvent {
         this.guild = guild;
     }
 
-    public MessageChannel getChannel() {
+    public MessageChannelUnion getChannel() {
         return channel;
     }
 
-    public void setChannel(MessageChannel channel) {
+    public void setChannel(MessageChannelUnion channel) {
         this.channel = channel;
     }
 
@@ -128,7 +131,7 @@ public class CommandEvent {
 
 
     Guild guild;
-    MessageChannel channel;
+    MessageChannelUnion channel;
     JDA jda;
     MessageReceivedEvent mRevE;
     User sender;
@@ -153,7 +156,7 @@ public class CommandEvent {
         this.mes = e.getMessage();
         this.creTime = e.getMessage().getTimeCreated();
         if (e.isFromGuild()) {
-            this.textChannel = e.getTextChannel();
+            this.textChannel = channel.asTextChannel();
         }
         this.pref = pref;
         if (e.isFromGuild()) {
@@ -162,62 +165,62 @@ public class CommandEvent {
         this.args = Args;
         this.commands = new ArrayList<>(cmdList.values());
         if (e.isFromGuild()) {
-            this.mentions = e.getMessage().getMentionedMembers();
+            this.mentions = e.getMessage().getMentions().getMembers();
         }
     }
 
     @Deprecated
     public void replySuccessOld(String title, String description, List<MessageEmbed.Field> embds) {
         if (mRevE.isFromGuild()) {
-            textChannel.sendMessage(EmbededBuilder.createOld(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
+            textChannel.sendMessageEmbeds(EmbededBuilder.createOld(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
         } else {
-            channel.sendMessage(EmbededBuilder.createOld(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
+            channel.sendMessageEmbeds(EmbededBuilder.createOld(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
         }
     }
 
     @Deprecated
     public void replyWarnOld(String title, String description, List<MessageEmbed.Field> embds) {
         if (mRevE.isFromGuild()) {
-            textChannel.sendMessage(EmbededBuilder.createOld(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
+            textChannel.sendMessageEmbeds(EmbededBuilder.createOld(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
         } else {
-            channel.sendMessage(EmbededBuilder.createOld(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
+            channel.sendMessageEmbeds(EmbededBuilder.createOld(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
         }
     }
 
     @Deprecated
     public void replyErrorOld(String title, String description, List<MessageEmbed.Field> embds) {
         if (mRevE.isFromGuild()) {
-            textChannel.sendMessage(EmbededBuilder.createOld(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
+            textChannel.sendMessageEmbeds(EmbededBuilder.createOld(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
         } else {
-            channel.sendMessage(EmbededBuilder.createOld(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
+            channel.sendMessageEmbeds(EmbededBuilder.createOld(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
         }
     }
 
     public void replySuccess(String title, String description, List<MessageEmbedField> embds) {
         if (mRevE.isFromGuild()) {
-            textChannel.sendMessage(EmbededBuilder.create(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
+            textChannel.sendMessageEmbeds(EmbededBuilder.create(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
         } else {
-            channel.sendMessage(EmbededBuilder.create(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
+            channel.sendMessageEmbeds(EmbededBuilder.create(pref.getEmoticons().success + title, description, Color.GREEN, embds).build()).queue();
         }
     }
 
     public void replyWarn(String title, String description, List<MessageEmbedField> embds) {
         if (mRevE.isFromGuild()) {
-            textChannel.sendMessage(EmbededBuilder.create(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
+            textChannel.sendMessageEmbeds(EmbededBuilder.create(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
         } else {
-            channel.sendMessage(EmbededBuilder.create(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
+            channel.sendMessageEmbeds(EmbededBuilder.create(pref.getEmoticons().warn + title, description, Color.ORANGE, embds).build()).queue();
         }
     }
 
     public void replyError(String title, String description, List<MessageEmbedField> embds) {
         if (mRevE.isFromGuild()) {
-            textChannel.sendMessage(EmbededBuilder.create(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
+            textChannel.sendMessageEmbeds(EmbededBuilder.create(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
         } else {
-            channel.sendMessage(EmbededBuilder.create(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
+            channel.sendMessageEmbeds(EmbededBuilder.create(pref.getEmoticons().error + title, description, Color.RED, embds).build()).queue();
         }
     }
 
-    public void reply(Message e) {
+    public void reply(MessageCreateData e) {
         if (mRevE.isFromGuild()) {
             textChannel.sendMessage(e).queue();
         } else {
@@ -227,9 +230,9 @@ public class CommandEvent {
 
     public void reply(MessageEmbed e) {
         if (mRevE.isFromGuild()) {
-            textChannel.sendMessage(e).queue();
+            textChannel.sendMessageEmbeds(e).queue();
         } else {
-            channel.sendMessage(e).queue();
+            channel.sendMessageEmbeds(e).queue();
         }
     }
 
@@ -247,12 +250,12 @@ public class CommandEvent {
         }
     }
 
-    public void replyPrivate(Message e) {
+    public void replyPrivate(MessageCreateData e) {
         this.getSender().openPrivateChannel().queue((channel) -> channel.sendMessage(e).queue());
     }
 
     public void replyPrivate(MessageEmbed e) {
-        this.getSender().openPrivateChannel().queue((channel) -> channel.sendMessage(e).queue());
+        this.getSender().openPrivateChannel().queue((channel) -> channel.sendMessageEmbeds(e).queue());
     }
 
     public void replyPrivate(String e) {

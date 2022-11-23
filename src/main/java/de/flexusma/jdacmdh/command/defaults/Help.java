@@ -23,7 +23,7 @@ public class Help extends Command {
 
     public Help() {
         this.name = "help";
-        this.botPermissions = new Permission[]{Permission.MESSAGE_WRITE};
+        this.botPermissions = new Permission[]{Permission.MESSAGE_SEND};
         this.guildOnly = false;
         this.help = "Displays a help message, explaining and listing the commands";
         this.usage = "help";
