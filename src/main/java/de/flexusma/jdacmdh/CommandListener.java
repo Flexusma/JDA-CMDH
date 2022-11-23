@@ -27,8 +27,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -199,18 +197,18 @@ public class CommandListener extends ListenerAdapter {
             preferences = new CommandPreferences();
         }
 
-        handleSlashCommand(event);
+        handleSlashCommand(event,preferences);
 
     }
 
-    private void handleSlashCommand(SlashCommandInteractionEvent event){
+    private void handleSlashCommand(SlashCommandInteractionEvent event, CommandPreferences preferences){
         Logger.log(LogType.DEBUG, "SlashCommand received: " + event.getName());
 
         for (SlashCommand slashCommand: slashCommands.cmds.values()) {
             if(slashCommand.name.equals(event.getName())){
                 Logger.log(LogType.INFO, "SlashCommand detected: " + event.getName());
                 event.deferReply().queue();
-                slashCommand.execute(event);
+                slashCommand.execute(event,preferences);
             }
 
         }

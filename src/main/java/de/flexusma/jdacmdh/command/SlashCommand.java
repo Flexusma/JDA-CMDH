@@ -7,6 +7,7 @@
 
 package de.flexusma.jdacmdh.command;
 
+import de.flexusma.jdacmdh.CommandPreferences;
 import de.flexusma.jdacmdh.exception.IllegalObjectModificationException;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -73,7 +74,7 @@ public abstract class SlashCommand {
         }
     }
 
-    public abstract void execute(SlashCommandInteractionEvent event);
+    public abstract void execute(SlashCommandInteractionEvent event, CommandPreferences preferences);
 
     public SlashCommandData getJdaCommandData(){return jdaCommandData;}
 
