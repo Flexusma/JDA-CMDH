@@ -7,15 +7,13 @@
 
 package de.flexusma.jdacmdh.command;
 
-import de.flexusma.jdacmdh.exception.IllegalCommandModificationException;
+import de.flexusma.jdacmdh.exception.IllegalObjectModificationException;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.*;
-import net.dv8tion.jda.api.requests.restaction.CommandCreateAction;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
 
 public abstract class SlashCommand {
     @NotNull
@@ -35,47 +33,49 @@ public abstract class SlashCommand {
         if(defaultPermissions!=null)this.jdaCommandData.setDefaultPermissions(defaultPermissions);
     }
 
-    protected void addOption(OptionType type, String name, String description) throws IllegalCommandModificationException {
-        if(hasInit) throw new IllegalCommandModificationException(this.name);
+    protected void addOption(OptionType type, String name, String description) throws IllegalObjectModificationException {
+        if(hasInit) throw new IllegalObjectModificationException(this.name);
         else{
             this.jdaCommandData.addOption(type,name,description);
         }
     }
-    protected void addOption(OptionType type, String name, String description, boolean required) throws IllegalCommandModificationException {
-        if(hasInit) throw new IllegalCommandModificationException(this.name);
+    protected void addOption(OptionType type, String name, String description, boolean required) throws IllegalObjectModificationException {
+        if(hasInit) throw new IllegalObjectModificationException(this.name);
         else{
             this.jdaCommandData.addOption(type,name,description,required);
         }
     }
-    protected void addOption(OptionType type, String name, String description, boolean required, boolean autocomplete) throws IllegalCommandModificationException {
-        if(hasInit) throw new IllegalCommandModificationException(this.name);
+    protected void addOption(OptionType type, String name, String description, boolean required, boolean autocomplete) throws IllegalObjectModificationException {
+        if(hasInit) throw new IllegalObjectModificationException(this.name);
         else{
             this.jdaCommandData.addOption(type,name,description,required,autocomplete);
         }
     }
 
-    protected void addOptions(OptionData... options) throws IllegalCommandModificationException {
-        if(hasInit) throw new IllegalCommandModificationException(this.name);
+    protected void addOptions(OptionData... options) throws IllegalObjectModificationException {
+        if(hasInit) throw new IllegalObjectModificationException(this.name);
         else{
             this.jdaCommandData.addOptions(options);
         }
     }
 
-    protected void addSubcommands(SubcommandData... subcommands) throws IllegalCommandModificationException {
-        if(hasInit) throw new IllegalCommandModificationException(this.name);
+    protected void addSubcommands(SubcommandData... subcommands) throws IllegalObjectModificationException {
+        if(hasInit) throw new IllegalObjectModificationException(this.name);
         else{
             this.jdaCommandData.addSubcommands(subcommands);
         }
     }
 
-    protected void addSubcommandGroups(SubcommandGroupData... subcommandGroups) throws IllegalCommandModificationException {
-        if(hasInit) throw new IllegalCommandModificationException(this.name);
+    protected void addSubcommandGroups(SubcommandGroupData... subcommandGroups) throws IllegalObjectModificationException {
+        if(hasInit) throw new IllegalObjectModificationException(this.name);
         else{
             this.jdaCommandData.addSubcommandGroups(subcommandGroups);
         }
     }
 
-    public abstract void execute(CommandEvent event);
+    public abstract void execute(SlashCommandInteractionEvent event);
+
+    public SlashCommandData getJdaCommandData(){return jdaCommandData;}
 
     public String getName() {
         return name;

@@ -14,21 +14,26 @@ import de.flexusma.jdacmdh.command.defaults.Help;
 import de.flexusma.jdacmdh.command.defaults.MsgPrivateOnGuildOnly;
 import de.flexusma.jdacmdh.debug.LogType;
 import de.flexusma.jdacmdh.debug.Logger;
+import de.flexusma.jdacmdh.exception.IllegalObjectModificationException;
+import de.flexusma.jdacmdh.interaction.ButtonInteractionInstance;
 import de.flexusma.jdacmdh.utils.PreferenceManager;
 import de.flexusma.jdacmdh.utils.embeds.EmbededBuilder;
 import de.flexusma.jdacmdh.utils.embeds.MessageEmbedField;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -46,6 +51,15 @@ public class CommandListener extends ListenerAdapter {
 
     private static InitSlashCommands slashCommands;
 
+    private static boolean hasInit = false;
+
+    public static void registerButton(ButtonInteractionInstance buttonInstance) throws IllegalObjectModificationException {
+        if(!hasInit) throw new IllegalObjectModificationException("Register Button");
+    }
+
+
+
+
     public CommandListener(CommandInitBuilder cmbdBuilder) {
         cmd = cmbdBuilder.cmds;
         if(cmbdBuilder.slashCommands.size()>0)
@@ -62,6 +76,8 @@ public class CommandListener extends ListenerAdapter {
         }
 
         listener = cmbdBuilder.listener;
+
+        hasInit = true;
     }
 
     @Override
@@ -69,7 +85,18 @@ public class CommandListener extends ListenerAdapter {
         super.onReady(event);
         if(loadedActivity!=null)
             event.getJDA().getPresence().setActivity(loadedActivity);
+
+        Logger.log(LogType.INFO, "Initialization complete. Registering slash commands...");
+        registerSlashCommands(event.getJDA(), slashCommands.cmds);
         Logger.log(LogType.INFO,"Bot ready!");
+    }
+
+    private void registerSlashCommands(JDA jda, HashMap<String,SlashCommand> slashCommands) {
+        List<CommandData> commandData = new ArrayList<>();
+        for (SlashCommand cmd : slashCommands.values()){
+            commandData.add(cmd.getJdaCommandData());
+        }
+        jda.updateCommands().addCommands(commandData).queue();
     }
 
     //guild messages
@@ -177,16 +204,15 @@ public class CommandListener extends ListenerAdapter {
     }
 
     private void handleSlashCommand(SlashCommandInteractionEvent event){
-        Logger.log(LogType.INFO, "SlashCommand received: " + event.getName());
+        Logger.log(LogType.DEBUG, "SlashCommand received: " + event.getName());
 
         for (SlashCommand slashCommand: slashCommands.cmds.values()) {
             if(slashCommand.name.equals(event.getName())){
+                Logger.log(LogType.INFO, "SlashCommand detected: " + event.getName());
                 event.deferReply().queue();
                 slashCommand.execute(event);
             }
 
         }
-
-
     }
 }

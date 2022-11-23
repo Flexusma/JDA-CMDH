@@ -1,8 +1,8 @@
 package de.flexusma.jdacmdh.exception;
 
-public class IllegalCommandModificationException extends Exception{
+public class IllegalObjectModificationException extends Exception{
     String cmdId;
-    public IllegalCommandModificationException(String commandId){
+    public IllegalObjectModificationException(String commandId){
         this.cmdId=commandId;
     }
 
